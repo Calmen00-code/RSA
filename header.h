@@ -7,4 +7,6 @@
     #define TRUE !FALSE
 #endif
 
+#define STR 100
+
 #endif

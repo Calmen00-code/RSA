@@ -4,9 +4,15 @@
  * Purpose: Implementation of the Lehmann's Primality Test 
  *          that will check if a prime is larger than 
  *          the specified natural number
+ * 
+ * External 
+ * Libary  : GMP library from GNU was used here to 
+ *           handle large bits of integer when computing
+ *           large integer value for 'a'. 
+ *           Please refer to the documentation provided in 
+ *           report on how to use each function of gmp
  */
 
-#include <stdio.h>  /* FIXME: Remove after testing */
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,8 +55,6 @@ int lehmann( int prime_number )
                 prob_prime = 1.0 - (1.0 / (double)power(2,i));
         } else
             is_prime = FALSE;
-        /* FIXME: Remove after testing */
-        /* printf("prob: %f\n", prob_prime); */
         ++i;
     }
 

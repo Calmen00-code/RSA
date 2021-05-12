@@ -6,18 +6,20 @@
 #include <stdio.h>
 #include "header.h"
 #include "lehmann.h"
+#include "file.h"
 
 int main(int argc, char* argv[])
 {
-    int i;
-    int status;
-    for ( i = 1; i <= 101; ++i ) {
-        status = lehmann( i );
-        if ( status == TRUE )
-            printf("%d: TRUE\n", i);
-        else
-            printf("%d: FALSE\n", i);
-    }
+    int i, j;
+    int num;
+    char **content;
+
+    num = readFileSize( argv[1] );
+    content = read( argv[1] );
     
+    for ( i = 0; i < num; ++i ) {
+        for ( j = 0; content[i][j] != '\0'; ++j )
+            printf("%c", content[i][j]);
+    }
     return 0;
 }
