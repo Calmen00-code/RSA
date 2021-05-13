@@ -3,6 +3,7 @@
  * Purpose: Handling the mathematical operation in this program
  */
 
+#include <stdio.h>
 #include "maths.h"
 
 int power( int num, int exp )
@@ -32,6 +33,7 @@ void gcd( mpz_t res, mpz_t a, mpz_t b )
     /* In Standard C: a != b */
     while ( mpz_cmp(a, b) != 0 ) {
         /* In Standard C: a > b */
+        printf("Infinite\n");
         if ( mpz_cmp(a, b) > 0 )
             mpz_sub(a, a, b);
         else

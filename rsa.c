@@ -4,6 +4,7 @@
  */
 
 #include <stdio.h>
+#include "euclidean.h"
 #include "rsa.h"
 #include "lehmann.h"
 #include "maths.h"
@@ -34,12 +35,12 @@ void random( mpz_t result, mpz_t lower,
  * Call random function to generate random numbers
  * and return the randomised prime numbers
  */
-void generateRandomPrime( mpz_t randNum, 
-                          mpz_t lower, mpz_t upper )
+void primalityTest( mpz_t randNum, mpz_t lower, 
+                    mpz_t upper )
 {
     gmp_randstate_t state;
     int stop = FALSE; 
-    
+ 
     /* Initialising random seed */
     gmp_randinit_default(state);
 
@@ -62,7 +63,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
 {
     mpz_t lower, upper, base;
     mpz_t p, q, fi, fiP, fiQ;
-    mpz_t invOne, invTwo;
+    mpz_t gcdRes, invOne, invTwo;
 
     /* Initialising lower and upper */
     mpz_init(lower); mpz_set_ui(lower, 0);
@@ -75,32 +76,35 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(fiQ); mpz_set_ui(fiQ, 0);
     mpz_init(invOne); mpz_set_ui(invOne, 0);
     mpz_init(invTwo); mpz_set_ui(invTwo, 0);
+    mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
     /* Taking key of bits between 64 to 1024 */
     mpz_pow_ui(lower, base, 64);
     mpz_pow_ui(upper, base, 1024);
 
     /* Generates prime for p and q */
-    generateRandomPrime( p, lower, upper );
-    generateRandomPrime( q, lower, upper );
+    primalityTest( p, lower, upper );
+    primalityTest( q, lower, upper );
 
+    mpz_set_ui(p, 3);
+    mpz_set_ui(q, 11);
     /* Computing n */
     mpz_mul(n, p, q);
 
     /* Computing fi */
-    mpz_sub_ui(fiP, p, 1); mpz_sub(fiQ, q, 1);
+    mpz_sub_ui(fiP, p, 1); mpz_sub_ui(fiQ, q, 1);
     mpz_mul(fi, fiP, fiQ);
 
     /* Finding e */
     findE(e, fi); 
 
-    extendedEuclidean( e, fi, invOne, invTwo );
+    extendedEuclidean( gcdRes, e, fi, invOne, invTwo );
 
     /* Assign the positive numbers to d */
     if ( mpz_cmp_ui( invOne, 0 ) > 0 )
-        mpz_set_ui(d, invOne);
+        mpz_set(d, invOne);
     else
-        mpz_set_ui(d, invTwo);
+        mpz_set(d, invTwo);
 
     /* Deallocating the structure */
     mpz_clear(lower); mpz_clear(upper);
@@ -108,6 +112,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_clear(q); mpz_clear(fi);
     mpz_clear(fiP); mpz_clear(fiQ);
     mpz_clear(invOne); mpz_clear(invTwo);
+    mpz_clear(gcdRes);
 }
 
 /**
@@ -121,14 +126,15 @@ void findE( mpz_t e, mpz_t fi )
     int stop = FALSE;
 
     mpz_init(i); mpz_set_ui(i, 1);
+    mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
     /* In Standard C: i < fi */
     while ( mpz_cmp(i, fi) < 0 && stop == FALSE ) {
         mpz_set(e, i);
-        gcd( gcdRes, e, fi );
+        mpz_gcd( gcdRes, e, fi );
         /* In Standard C: gcdRes == 1 */
         if ( mpz_cmp_ui(gcdRes, 1) == 0 )
             stop = TRUE;
-        ++i;
+        mpz_add_ui(i, i, 1);
     }
 }

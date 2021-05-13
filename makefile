@@ -23,7 +23,7 @@ maths.o : maths.c maths.h
 file.o : file.c file.h
 	$(CC) $(CFLAGS) -c file.c
 
-rsa.o : rsa.c rsa.h lehmann.h header.h maths.h
+rsa.o : rsa.c rsa.h lehmann.h header.h maths.h euclidean.h
 	$(CC) $(CFLAGS) $(LFLAGS) -c rsa.c
 
 euclidean.o : euclidean.c euclidean.h

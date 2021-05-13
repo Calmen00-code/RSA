@@ -27,7 +27,7 @@ int lehmann( mpz_t prime )
     int i;
     double prob_prime = 0.0;
     int is_prime = TRUE;
-    mpz_t powVal, base, a, r, exp, tmp, remainder;
+    mpz_t powVal, base, a, r, exp, tmp, remainder, mod;
     gmp_randstate_t state;
     
     /* Initialising mpz data structure */
@@ -38,6 +38,7 @@ int lehmann( mpz_t prime )
     mpz_init(exp); mpz_set_ui(exp, 0);
     mpz_init(tmp); mpz_set_ui(tmp, 0);
     mpz_init(remainder); mpz_set_ui(remainder, 0);
+    mpz_init(mod); mpz_set_ui(mod, 1025);
 
     /* Initialising the time seed for Random */
     gmp_randinit_default(state);
@@ -49,9 +50,9 @@ int lehmann( mpz_t prime )
 
     i = 0;
     while ( i < NREPEATS_LEHMANN && is_prime == TRUE ) {
-        mpz_urandomm(a, state, prime);          /* Randomised a */
-        mpz_pow_ui(powVal, a, mpz_get_ui(exp)); /* Raise a to exp */
-        mpz_mod(r, powVal, prime);              /* r = powVal % prime number */
+        mpz_urandomm(a, state, prime);      /* Randomised a */
+        mpz_powm(powVal, a, exp, mod);      /* Raise a to exp */
+        mpz_mod(r, powVal, prime);          /* r = powVal % prime number */
 
         /* DEFINITELY not a prime when this IF fails */
         mpz_sub_ui(tmp, prime, 1);

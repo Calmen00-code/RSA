@@ -7,33 +7,28 @@
 
 int main()
 {
-    mpz_t a, b, x, y, gcd;
+    mpz_t p, q, n;
+    mpz_t fi, e, d;
 
-    mpz_init(x); mpz_set_ui(x, 0);
-    mpz_init(y); mpz_set_ui(y, 0);
-    mpz_init(gcd); mpz_set_ui(gcd, 0);
+    mpz_init(p); mpz_set_ui(p, 3);
+    mpz_init(q); mpz_set_ui(p, 11);
+    mpz_init(n); mpz_set_ui(n, 0);
+    mpz_init(fi); mpz_set_ui(fi, 0);
+    mpz_init(e); mpz_set_ui(e, 0);
+    mpz_init(d); mpz_set_ui(d, 0);
 
-    mpz_init(a); mpz_set_ui(a, 3);
-    mpz_init(b); mpz_set_ui(b, 20);
-
-    extendedEuclidean( gcd, a, b, x, y );
-    printf("gcd: ");
-    mpz_out_str(stdout, 10, gcd);
+    generateKey( e, n, d );
+    printf("e: ");
+    mpz_out_str(stdout, 10, e);
+    printf("\n");
+    
+    printf("n: ");
+    mpz_out_str(stdout, 10, n);
     printf("\n");
 
-    printf("x = ");
-    mpz_out_str(stdout, 10, x);
-    printf("\n"); 
-    
-    printf("y = ");
-    mpz_out_str(stdout, 10, y);
-    printf("\n"); 
-
-    mpz_clear(a);
-    mpz_clear(b);
-    mpz_clear(x);
-    mpz_clear(y);
-    mpz_clear(gcd);
+    printf("d: ");
+    mpz_out_str(stdout, 10, d);
+    printf("\n");
     return 0;
 }
 
@@ -74,4 +69,33 @@ int main()
             printf("%d\n", j);
     }
     mpz_clear(rop);
+*/
+
+/*
+------- Testing Extended Euclidean --------
+    mpz_t a, b, x, y, gcd;
+
+    mpz_init(x); mpz_set_ui(x, 0);
+    mpz_init(y); mpz_set_ui(y, 0);
+    mpz_init(gcd); mpz_set_ui(gcd, 0);
+
+    mpz_init(a); mpz_set_ui(a, 3);
+    mpz_init(b); mpz_set_ui(b, 20);
+
+    extendedEuclidean( gcd, a, b, x, y );
+    printf("gcd: ");
+    mpz_out_str(stdout, 10, gcd);
+    printf("\n");
+
+    printf("x = ");
+    mpz_out_str(stdout, 10, x);
+    printf("\n"); 
+    
+    printf("y = ");
+    mpz_out_str(stdout, 10, y);
+    printf("\n"); 
+
+    mpz_clear(a); mpz_clear(b);
+    mpz_clear(x); mpz_clear(y);
+    mpz_clear(gcd);
 */
