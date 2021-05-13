@@ -4,5 +4,6 @@
 #include <gmp.h>
 
 void random( mpz_t result, mpz_t lower, mpz_t upper, gmp_randstate_t state );
+void generateRandomPrime( mpz_t randomNum, mpz_t lower, mpz_t upper );
 
 #endif

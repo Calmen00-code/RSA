@@ -41,7 +41,7 @@ int lehmann(int n, int t)
 // Driver code
 int main()
 {
-    int n = 101 ; // number to be tested
+    int n = 3 ; // number to be tested
     int t = 10 ; // number of tries
   
     // if n is 2, it is prime

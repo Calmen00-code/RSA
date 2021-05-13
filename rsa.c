@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <gmp.h> /* For large number computation */
 #include "rsa.h"
+#include "lehmann.h"
 
 void random( mpz_t result, mpz_t lower, 
              mpz_t upper, gmp_randstate_t state )
@@ -26,6 +27,35 @@ void random( mpz_t result, mpz_t lower,
     mpz_add(result, result, lower);
 }
 
-/*
-void generateKey( 
-*/
+/**
+ * Used by generateKey to get p and q
+ *
+ * Call random function to generate random numbers
+ * and return the randomised prime numbers
+ */
+void generateRandomPrime( mpz_t randomNum, 
+                          mpz_t lower, mpz_t upper )
+{
+    gmp_randstate_t state;
+    int stop = FALSE; 
+    
+    /* Initialising random seed */
+    gmp_randinit_default(state);
+
+    /* Iterate until prime is acquired */
+    while ( stop == FALSE ) {
+        random( randNum, lower, upper, state );
+        if ( lehmann( randNum ) == TRUE )
+            stop = TRUE;
+    }
+    gmp_randclear(state);
+}
+
+    mpz_t lower, upper;
+
+    /* Initialising lower and upper */
+    mpz_init(lower); mpz_set_ui(lower, 0);
+    mpz_init(upper); mpz_set_ui(upper, 0);
+
+    /* Compute the value for lower and upper */
+    mpz_pow_ui(
