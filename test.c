@@ -10,8 +10,8 @@ int main()
     mpz_t p, q, n;
     mpz_t fi, e, d;
 
-    mpz_init(p); mpz_set_ui(p, 3);
-    mpz_init(q); mpz_set_ui(p, 11);
+    mpz_init(p); mpz_set_ui(p, 263);
+    mpz_init(q); mpz_set_ui(q, 587);
     mpz_init(n); mpz_set_ui(n, 0);
     mpz_init(fi); mpz_set_ui(fi, 0);
     mpz_init(e); mpz_set_ui(e, 0);

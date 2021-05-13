@@ -86,8 +86,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     primalityTest( p, lower, upper );
     primalityTest( q, lower, upper );
 
-    mpz_set_ui(p, 3);
-    mpz_set_ui(q, 11);
+    /* FIXME: Remove after testing */
+    /* mpz_set_ui(p, 263); mpz_set_ui(q, 587); */
+
     /* Computing n */
     mpz_mul(n, p, q);
 
@@ -96,6 +97,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_mul(fi, fiP, fiQ);
 
     /* Finding e */
+    printf("Fi: ");
+    mpz_out_str(stdout, 10, fi);
+    printf("\n");
     findE(e, fi); 
     printf("e: ");
     mpz_out_str(stdout, 10, e);
@@ -109,6 +113,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
         mpz_set(d, invOne);
     else
         mpz_set(d, invTwo);
+    
+    /* FIXME: Remove after testing */
+    /* mpz_set_ui(e, 683); mpz_set_ui(d, 81599); */
 
     /* Deallocating the structure */
     mpz_clear(lower); mpz_clear(upper);
@@ -129,13 +136,19 @@ void findE( mpz_t e, mpz_t fi )
     mpz_t i, gcdRes, invOne, invTwo;
     int stop = FALSE;
 
-    mpz_init(i); mpz_set_ui(i, 1);
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
     mpz_init(invOne); mpz_set_ui(invOne, 0);
     mpz_init(invTwo); mpz_set_ui(invTwo, 0);
 
+    /*
+     * i is not set to 1 as e = 1 is 
+     * cryptographically unsafe
+     */
+    mpz_init(i); mpz_set_ui(i, 2);
+
     /* In Standard C: i < fi */
     while ( mpz_cmp(i, fi) < 0 && stop == FALSE ) {
+        /* Setting e = i */
         mpz_set(e, i);
         mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
         /* In Standard C: gcdRes == 1 */
