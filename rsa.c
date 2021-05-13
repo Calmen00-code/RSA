@@ -97,8 +97,12 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
 
     /* Finding e */
     findE(e, fi); 
+    printf("e: ");
+    mpz_out_str(stdout, 10, e);
+    printf("\n");
 
-    extendedEuclidean( gcdRes, e, fi, invOne, invTwo );
+    mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
+    /* extendedEuclidean( gcdRes, e, fi, invOne, invTwo ); */
 
     /* Assign the positive numbers to d */
     if ( mpz_cmp_ui( invOne, 0 ) > 0 )
@@ -122,19 +126,23 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
  */
 void findE( mpz_t e, mpz_t fi )
 {
-    mpz_t i, gcdRes;
+    mpz_t i, gcdRes, invOne, invTwo;
     int stop = FALSE;
 
     mpz_init(i); mpz_set_ui(i, 1);
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
+    mpz_init(invOne); mpz_set_ui(invOne, 0);
+    mpz_init(invTwo); mpz_set_ui(invTwo, 0);
 
     /* In Standard C: i < fi */
     while ( mpz_cmp(i, fi) < 0 && stop == FALSE ) {
         mpz_set(e, i);
-        mpz_gcd( gcdRes, e, fi );
+        mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
         /* In Standard C: gcdRes == 1 */
-        if ( mpz_cmp_ui(gcdRes, 1) == 0 )
+        if ( mpz_cmp_ui(gcdRes, 1) == 0 ) {
             stop = TRUE;
+            printf("TRUE\n");
+        }
         mpz_add_ui(i, i, 1);
     }
 }
