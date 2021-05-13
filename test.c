@@ -3,11 +3,43 @@
 #include "lehmann.h"
 #include "header.h"
 #include "rsa.h"
+#include "euclidean.h"
 
 int main()
 {
+    mpz_t a, b, x, y, gcd;
+
+    mpz_init(x); mpz_set_ui(x, 0);
+    mpz_init(y); mpz_set_ui(y, 0);
+    mpz_init(gcd); mpz_set_ui(gcd, 0);
+
+    mpz_init(a); mpz_set_ui(a, 3);
+    mpz_init(b); mpz_set_ui(b, 20);
+
+    extendedEuclidean( gcd, a, b, x, y );
+    printf("gcd: ");
+    mpz_out_str(stdout, 10, gcd);
+    printf("\n");
+
+    printf("x = ");
+    mpz_out_str(stdout, 10, x);
+    printf("\n"); 
+    
+    printf("y = ");
+    mpz_out_str(stdout, 10, y);
+    printf("\n"); 
+
+    mpz_clear(a);
+    mpz_clear(b);
+    mpz_clear(x);
+    mpz_clear(y);
+    mpz_clear(gcd);
+    return 0;
+}
+
 
 /*
+------------- Testing for Random number within a range ---------------------
     int i;
     mpz_t lower, upper, result;
     gmp_randstate_t state;
@@ -28,6 +60,8 @@ int main()
     }
 */
 
+/*
+--------------------- Testing for lehmann algorithm --------------------
     int j;
     mpz_t rop;
 
@@ -40,5 +74,4 @@ int main()
             printf("%d\n", j);
     }
     mpz_clear(rop);
-    return 0;
-}
+*/
