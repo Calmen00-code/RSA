@@ -1,8 +1,12 @@
 CC = gcc
 CFLAGS = -Werror -Wall -ansi -pedantic -g
-LFLAGS = -lgmp 
-OBJ = main.o lehmann.o maths.o file.o
+LFLAGS = -lgmp
+OBJ = main.o lehmann.o maths.o file.o rsa.o
+OBJT = test.o rsa.o # For testing
 EXEC = rsa
+EXECT = test # For testing 
+
+all : $(EXEC) $(EXECT)
 
 $(EXEC) : $(OBJ)
 	$(CC) $(OBJ) $(LFLAGS) -o $(EXEC)
@@ -19,5 +23,14 @@ maths.o : maths.c maths.h
 file.o : file.c file.h
 	$(CC) $(CFLAGS) -c file.c
 
+rsa.o : rsa.c rsa.h
+	$(CC) $(CFLAGS) $(LFLAGS) -c rsa.c
+
+$(EXECT) : $(OBJT)
+	$(CC) $(OBJT) $(LFLAGS) -o $(EXECT)
+
+test.o : test.c rsa.h
+	$(CC) $(CFLAGS) $(LFLAGS) -c test.c
+
 clean:
-	rm -f $(OBJ) $(EXEC)
+	rm -f $(OBJ) $(EXEC) $(OBJT) $(EXECT)
