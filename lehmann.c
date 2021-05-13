@@ -13,6 +13,7 @@
  *           report on how to use each function of gmp
  */
 
+#include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,13 +22,12 @@
 #include "lehmann.h"
 #include "header.h"
 
-int lehmann( int prime_number )
+int lehmann( mpz_t prime )
 {
     int i;
-    long int exp;
     double prob_prime = 0.0;
     int is_prime = TRUE;
-    mpz_t powVal, base, a, p, r;
+    mpz_t powVal, base, a, r, exp, tmp, remainder;
     gmp_randstate_t state;
     
     /* Initialising mpz data structure */
@@ -35,20 +35,27 @@ int lehmann( int prime_number )
     mpz_init(base); mpz_set_ui(base, 0);
     mpz_init(a); mpz_set_ui(a, 0);
     mpz_init(r); mpz_set_ui(r, 0);
-    mpz_init(p); mpz_set_ui(p, prime_number);
+    mpz_init(exp); mpz_set_ui(exp, 0);
+    mpz_init(tmp); mpz_set_ui(tmp, 0);
+    mpz_init(remainder); mpz_set_ui(remainder, 0);
 
     /* Initialising the time seed for Random */
     gmp_randinit_default(state);
 
-    exp = (prime_number - 1) / 2;
+    /* tmp = prime - 1 */
+    mpz_sub_ui(tmp, prime, 1);
+    /* exp = tmp / 2 */
+    mpz_tdiv_qr_ui(exp, remainder, tmp, 2);
+
     i = 0;
     while ( i < NREPEATS_LEHMANN && is_prime == TRUE ) {
-        mpz_urandomm(a, state, p);  /* Randomised a */
-        mpz_pow_ui(powVal, a, exp); /* Raise a to exp */
-        mpz_mod(r, powVal, p);      /* r = powVal % prime number */
+        mpz_urandomm(a, state, prime);          /* Randomised a */
+        mpz_pow_ui(powVal, a, mpz_get_ui(exp)); /* Raise a to exp */
+        mpz_mod(r, powVal, prime);              /* r = powVal % prime number */
 
         /* DEFINITELY not a prime when this IF fails */
-        if ( mpz_cmp_d(r, 1) == 0 || mpz_cmp_d(r, prime_number - 1) == 0 ) {
+        mpz_sub_ui(tmp, prime, 1);
+        if ( mpz_cmp_d(r, 1) == 0 || mpz_cmp(r, tmp) == 0 ) {
             if ( i == 0 )
                 prob_prime = 0.5;
             else
@@ -61,8 +68,11 @@ int lehmann( int prime_number )
     if ( prob_prime > 0.5 )
         is_prime = TRUE;
 
+    /* Deallocating the structure */
     mpz_clear(powVal); mpz_clear(base); 
-    mpz_clear(a); mpz_clear(p); mpz_clear(r);
+    mpz_clear(a); mpz_clear(r);
+    mpz_clear(exp); mpz_clear(tmp);
+    mpz_clear(remainder); gmp_randclear(state);
 
     return is_prime;
 }

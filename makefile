@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Werror -Wall -ansi -pedantic -g
 LFLAGS = -lgmp
 OBJ = main.o lehmann.o maths.o file.o rsa.o
-OBJT = test.o rsa.o # For testing
+OBJT = test.o rsa.o lehmann.o maths.o # For testing
 EXEC = rsa
 EXECT = test # For testing 
 
@@ -29,7 +29,7 @@ rsa.o : rsa.c rsa.h
 $(EXECT) : $(OBJT)
 	$(CC) $(OBJT) $(LFLAGS) -o $(EXECT)
 
-test.o : test.c rsa.h
+test.o : test.c rsa.h header.h lehmann.h
 	$(CC) $(CFLAGS) $(LFLAGS) -c test.c
 
 clean:

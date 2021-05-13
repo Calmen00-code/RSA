@@ -25,3 +25,7 @@ void random( mpz_t result, mpz_t lower,
     mpz_urandomm(result, state, range);
     mpz_add(result, result, lower);
 }
+
+/*
+void generateKey( 
+*/
