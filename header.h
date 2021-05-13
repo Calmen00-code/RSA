@@ -7,6 +7,7 @@
     #define TRUE !FALSE
 #endif
 
-#define STR 100
+#define STR 10000
+#define CHAR_GAP 2
 
 #endif
