@@ -10,19 +10,18 @@
 void random( mpz_t result, mpz_t lower, 
              mpz_t upper, gmp_randstate_t state )
 {
-    mpz_t randLower, randUpper;
+    /* mpz_t randNum, range; */
+    mpz_t range;
 
     /* Initialising randUpper and randLower */
-    mpz_init(randLower); mpz_set_ui(randLower, 0);
-    mpz_init(randUpper); mpz_set_ui(randUpper, 0);
+    /* mpz_init(randNum); mpz_set_ui(randNum, 0); */
+    mpz_init(range); mpz_set_ui(range, 0);
 
-    /* Generating mpz random number */
-    mpz_urandomm(randLower, state, lower);
-    mpz_urandomm(randUpper, state, upper);
+    /* Computing range for random number */
+    mpz_sub(range, upper, lower);   /* range = upper - lower */
+    mpz_add_ui(range, range, 1);    /* range = range + 1 */
 
-   /**
-    * Performs substraction so we can randomised
-    * value in the range of >= lower and <= upper
-    */
-    mpz_sub(result, randUpper, randLower);
+    /* Generating random number within range */ 
+    mpz_urandomm(result, state, range);
+    mpz_add(result, result, lower);
 }
