@@ -6,10 +6,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <gmp.h>
 #include "header.h"
 #include "lehmann.h"
 #include "file.h"
 
+/**
+ * Check if the current character of 
+ * content has a pairing partner
+ */
 int hasPair( char content[], char i, char j )
 {
     int pair = TRUE;
@@ -19,6 +24,10 @@ int hasPair( char content[], char i, char j )
     return pair;
 }
 
+/**
+ * Writing the ascii so that it can be paired
+ * with the next ascii value (so that it is 2 pairs) 
+ */
 void asciiWrite( char *asciiStr, int ascii )
 {
     if ( ascii < 100 ) /* Add 0 at front */
@@ -59,7 +68,6 @@ int main(int argc, char* argv[])
                     asciiWrite( asciiStr, ascii );
                     strcat( asciiMsg, asciiStr );
                 }
-                /* printf("%s\n", asciiStr); */
                 strcat( asciiMsg, " " ); /* Adding white spaces to asciiMsg */
                 memset(asciiStr, 0, sizeof(asciiStr));  /* Empty the string */
             }
