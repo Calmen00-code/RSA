@@ -42,3 +42,8 @@ void gcd( mpz_t res, mpz_t a, mpz_t b )
     mpz_set(res, a);
     mpz_clear(i);
 }
+
+/**
+ * Performs fast-modular exponentiation
+ */
+void fastModularExp( 

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gmp.h>
+#include <math.h>
 #include "header.h"
 
 int getArraySize( char str[] )
@@ -17,8 +18,73 @@ int getArraySize( char str[] )
     return size;
 }
 
+int decToBin( int *arr, int n )
+{
+    int i, size, j;
+    int *a;
+
+    a = calloc(sizeof(int*), n);
+
+    for ( i = 0; n > 0; i++) {
+        a[i] = n % 2;
+        n = n / 2;
+    }
+    size = i;
+    --i;
+    for ( j = 0; j < size; ++j ) {
+        arr[j] = a[i];
+        --i;
+    }
+    free(a); a = NULL;
+    return size;
+}
+
+void fastExp( int *res, int x, int h, int n )
+{
+    int *bin, i, y, size;
+    char binStr[STR];
+
+    /* Binary is at most the value of h */
+    bin = calloc(sizeof(int*), h);
+    memset(bin, -1, sizeof(bin));
+
+    size = decToBin( bin, h );
+    y = x;
+
+    for ( i = 1; i < size; ++i ) {
+        y = ((int)pow(y, 2)) % n;
+        if ( bin[i] == 1 )
+            y = (y * x) % n;
+    }
+    *res = y;
+    free(bin); bin = NULL;
+}
+
 int main()
 {
+    int res;
+    fastExp( &res, 4, 3, 33 );
+    printf("%d\n", res);
+    return 0;
+}
+
+/*
+---------- Decimal To Binary 
+    int i;
+    for ( i = 1; i < 1000; ++i )
+        printf("%d\n", 3%i);
+    int arr[1000], i;
+
+    memset(arr, -1, sizeof(arr));    
+    decToBin( arr, 100 );
+    for ( i = 0; i < 1000; ++i ) {
+        if ( arr[i] != -1 )
+            printf("%d", arr[i]);
+    }
+    printf("\n");
+*/
+
+/*
     char str[STR];
     char *token;
     int *arr, arrSize, i;
@@ -41,8 +107,7 @@ int main()
         printf("%d ", arr[i]);
     printf("\n");
     free(arr); arr = NULL;
-    return 0;
-}
+*/
 
 /*
     mpz_t e, fi, gcdVal, invOne, invTwo;
