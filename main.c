@@ -16,12 +16,15 @@
  * Check if the current character of 
  * content has a pairing partner
  */
-int hasPair( char content[], char i, char j )
+int hasPair( char content[], int j )
 {
-    int pair = TRUE;
+    int pair = FALSE;
 
-    if ( content[j+1] == '\0' )
-        pair = FALSE;
+    /* Standard keyboard character in ASCII */
+    if ( content[j+1] >= 32 &&
+         content[j+1] <= 126 ) {
+        pair = TRUE;
+    }
     return pair;
 }
 
@@ -55,7 +58,7 @@ int main(int argc, char* argv[])
         for ( i = 0; i < size; ++i ) {
             for ( j = 0; content[i][j] != '\0'; ++j ) {
                 /* No padding required */
-                if ( hasPair( content[i], i, j ) == TRUE ) {                    
+                if ( hasPair( content[i], j ) == TRUE ) {                    
                     /* Iteration fixed at 2 times (2 ASCII chars is a pair) */
                     for ( k = 0; k < CHAR_GAP; ++k ) {
                         ascii = (int)content[i][j];
@@ -63,6 +66,8 @@ int main(int argc, char* argv[])
                         strcat( asciiMsg, asciiStr );
                         ++j;  /* Increment j to move to the next character */
                     }
+                    --j; /* revert j by 1 as it is being added 1 in 
+                            addition to stop the loop above */
                 } else { /* Padding required */
                     strcpy( asciiStr, "000" );
                     ascii = (int)content[i][j];
@@ -73,6 +78,7 @@ int main(int argc, char* argv[])
                 memset(asciiStr, 0, sizeof(asciiStr));  /* Empty the string */
             }
         }
+        printf("ascii message: %s\n", asciiMsg);
         Encryption( asciiMsg );    /* Public Key = n, e */
 
         /* Free the dynamic allocation created from read */

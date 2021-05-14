@@ -62,15 +62,8 @@ void fastExp( int *res, int x, int h, int n )
 
 int main()
 {
-    int arr[1000], i;
-
-    memset(arr, -1, sizeof(arr));    
-    decToBin( arr, 100 );
-    for ( i = 0; i < 1000; ++i ) {
-        if ( arr[i] != -1 )
-            printf("%d", arr[i]);
-    }
-    printf("\n");
+    char a = '\n';
+    printf("%d\n", a);
 /*
     int res;
     fastExp( &res, 4, 3, 33 );

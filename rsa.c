@@ -41,18 +41,25 @@ void Encryption( char asciiMsg[] )
     getAsciiArray( asciiMsg, asciiArr );
 
     /* FIXME: Remove after testing */
+/*
     printf("e: ");
     mpz_out_str(stdout, 10, e);
     printf("\n");
     printf("n: ");
     mpz_out_str(stdout, 10, n);
     printf("\n");
+    printf("d: ");
+    mpz_out_str(stdout, 10, d);
+    printf("\n");
+*/
 
-    for ( i = 0; i < arrSize; ++i ) {
+    asciiArr[0] = 4;    /* FIXME */
+    for ( i = 0; i < arrSize - 1; ++i ) {
         fastExp( &c, asciiArr[i], 
             mpz_get_ui(e), mpz_get_ui(n) );
-        printf("%d\n", c);
+        printf("c: %d\n", c);
     }
+    printf("\n");
 }
 
 /**
@@ -92,7 +99,7 @@ int getArraySize( char str[] )
     return size;
 }
 
-void random( mpz_t result, mpz_t lower, 
+void randomGenerator( mpz_t result, mpz_t lower, 
              mpz_t upper, gmp_randstate_t state )
 {
     /* mpz_t randNum, range; */
@@ -128,7 +135,7 @@ void generateRandomPrime( mpz_t randNum, mpz_t lower,
  
     /* Iterate until prime is acquired */
     while ( stop == FALSE ) {
-        random( randNum, lower, upper, state );
+        randomGenerator( randNum, lower, upper, state );
         /* Primality Test */
         if ( lehmann( randNum ) == TRUE )
             stop = TRUE;

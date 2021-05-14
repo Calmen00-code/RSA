@@ -4,6 +4,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include "header.h"
 #include "file.h"
@@ -30,7 +31,7 @@ char** read( char filename[] )
     } else {        
         /* Reading stops when the pointer reaches the end of file */
         i = 0;
-        while ( fgets( content[i], STR, readPtr ) != NULL )
+        while ( fscanf( readPtr, "%[^\n]\n", content[i] ) != EOF )
            ++i; 
         fclose(readPtr); readPtr = NULL;
     }

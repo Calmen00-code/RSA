@@ -3,7 +3,7 @@
 
 #include <gmp.h> /* For large number computation structure */
 
-void random( mpz_t result, mpz_t lower, mpz_t upper, gmp_randstate_t state );
+void randomGenerator( mpz_t result, mpz_t lower, mpz_t upper, gmp_randstate_t state );
 void getAsciiArray( char asciiMsg[], int *asciiArr );
 void Encryption( char asciiMsg[] );
 int getArraySize( char str[] );

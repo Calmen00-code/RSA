@@ -66,7 +66,6 @@ void fastExp( int *res, int x, int h, int n )
 
     for ( i = 1; i < size; ++i ) {
         y = ((long long int)pow(y, 2)) % n;
-        printf("y: %d\n", y);
         if ( bin[i] == 1 )
             y = (y * x) % n;
     }
