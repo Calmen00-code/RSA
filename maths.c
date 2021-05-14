@@ -53,28 +53,32 @@ int decToBin( int *arr, int n )
 /**
  * Performs fast modular exponentiation
  */
-void fastExp( int *res, int x, int h, int n )
+void fastExp( mpz_t res, mpz_t x, mpz_t h, mpz_t n )
 {
-    int *bin, i, y, size;
+    int *bin, i, size;
+    mpz_t y;
+
+    /* Initialising y */
+    mpz_init(y); mpz_set_ui(y, 0);
 
     /* Binary is at most the value of h */
-    bin = calloc(sizeof(int), h);
-    setArray( bin, h, -1 );
+    bin = calloc(sizeof(int), mpz_get_ui(h));
+    setArray( bin, mpz_get_ui(h), -1 );
 
-    size = decToBin( bin, h );
-    y = x;
-    printf("x: %d\n", x);
+    size = decToBin( bin, mpz_get_ui(h) );
+    mpz_set(y, x);
 
     for ( i = 1; i < size; ++i ) {
-        printf("y (SQ): %lld\n", (long long int)power(y, 2));
-        y = power(y, 2) % n;
+        mpz_pow_ui(y, y, 2);
+        mpz_mod(y, y, n);
         if ( bin[i] == 1 ) {
-            y = (y * x) % n;
-            printf("y (MUL): %d\n", y);
+            mpz_mul(y, y, x);
+            mpz_mod(y, y, n);
         }
     }
-    *res = y;
-    printf("END\n\n");
+    mpz_set(res, y);
+
+    mpz_clear(y);
     free(bin); bin = NULL;
 }
 

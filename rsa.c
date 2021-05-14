@@ -20,15 +20,17 @@
  */
 void Encryption( char asciiMsg[], char ciphertext[] )
 {
-    int i, c;
+    int i;
     int *asciiArr, arrSize;
-    mpz_t n, e, d;
-    char cipher[STR];
+    mpz_t c, n, e, d, x;
+    /* char cipher[STR]; */
 
     /* Initialising mpz structure */
     mpz_init(n); mpz_set_ui(n, 0);
     mpz_init(e); mpz_set_ui(e, 0);
     mpz_init(d); mpz_set_ui(d, 0);
+    mpz_init(c); mpz_set_ui(c, 0);
+    mpz_init(x); mpz_set_ui(x, 0);
 
     /* Generating public key */
     generateKey( e, n, d );
@@ -42,12 +44,16 @@ void Encryption( char asciiMsg[], char ciphertext[] )
     getAsciiArray( asciiMsg, asciiArr );
 
     for ( i = 0; i < arrSize - 1; ++i ) {
-        fastExp( &c, asciiArr[i], 
-            mpz_get_ui(e), mpz_get_ui(n) );
-        printf("c: %d\n", c);
+        mpz_set_ui(x, asciiArr[i]);
+        fastExp( c, x, e, n );
+        printf("c: ");
+        mpz_out_str(stdout, 10, c);
+        printf("\n");
+/*
         sprintf( cipher, "%d", c );
         strcat( ciphertext, cipher );
         strcat( ciphertext, " " );
+*/
     }
 }
 

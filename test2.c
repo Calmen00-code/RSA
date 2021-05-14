@@ -39,25 +39,11 @@ int decToBin( int *arr, int n )
     return size;
 }
 
-void fastExp( int *res, int x, int h, int n )
+void setArray( int *arr, int size, int val )
 {
-    int *bin, i, y, size;
-    char binStr[STR];
-
-    /* Binary is at most the value of h */
-    bin = calloc(sizeof(int), h);
-    memset(bin, -1, sizeof(int));
-
-    size = decToBin( bin, h );
-    y = x;
-
-    for ( i = 1; i < size; ++i ) {
-        y = ((int)pow(y, 2)) % n;
-        if ( bin[i] == 1 )
-            y = (y * x) % n;
-    }
-    *res = y;
-    free(bin); bin = NULL;
+    int i;
+    for ( i = 0; i < size; ++i )
+        arr[i] = val;
 }
 
 int power( int num, int exp )
@@ -75,10 +61,51 @@ int power( int num, int exp )
     return total;
 }
 
+void fastExp( mpz_t res, mpz_t x, mpz_t h, mpz_t n )
+{
+    int *bin, i, size;
+    char binStr[STR];
+    mpz_t y;
+
+    /* Initialising y */
+    mpz_init(y); mpz_set_ui(y, 0);
+
+    /* Binary is at most the value of h */
+    bin = calloc(sizeof(int), mpz_get_ui(h));
+    setArray( bin, mpz_get_ui(h), -1 );
+
+    size = decToBin( bin, mpz_get_ui(h) );
+    mpz_set(y, x);
+
+    for ( i = 1; i < size; ++i ) {
+        mpz_pow_ui(y, y, 2);
+        mpz_mod(y, y, n);
+        if ( bin[i] == 1 ) {
+            mpz_mul(y, y, x);
+            mpz_mod(y, y, n);
+        }
+    }
+    mpz_set(res, y);
+
+    mpz_clear(y);
+    free(bin); bin = NULL;
+}
+
 int main()
 {
-    int num = 8, exp = 4;
-    printf("%d\n", power( num, exp ));
+    mpz_t m, e, n, res;
+
+    mpz_init(m); mpz_set_ui(m, 31);
+    mpz_init(e); mpz_set_ui(e, 7);
+    mpz_init(n); mpz_set_ui(n, 33);
+    mpz_init(res); mpz_set_ui(res, 0);
+
+    fastExp( res, m, e, n );
+    printf("res: ");
+    mpz_out_str(stdout, 10, res);
+
+    mpz_clear(m); mpz_clear(e); 
+    mpz_clear(n);
 /*
     int res;
     fastExp( &res, 4, 3, 33 );
