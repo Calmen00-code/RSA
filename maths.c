@@ -22,28 +22,49 @@ int power( int num, int exp )
 }
 
 /**
- * GCD in mpz_t
+ * Converting n to binary array
  */
-void gcd( mpz_t res, mpz_t a, mpz_t b )
+int decToBin( int *arr, int n )
 {
-    mpz_t i;
+    int i, size, j;
+    int *a;
 
-    mpz_init(i); mpz_set_ui(i, 1);
+    a = calloc(sizeof(int*), n);
 
-    /* In Standard C: a != b */
-    while ( mpz_cmp(a, b) != 0 ) {
-        /* In Standard C: a > b */
-        printf("Infinite\n");
-        if ( mpz_cmp(a, b) > 0 )
-            mpz_sub(a, a, b);
-        else
-            mpz_sub(b, b, a);
+    for ( i = 0; n > 0; i++) {
+        a[i] = n % 2;
+        n = n / 2;
     }
-    mpz_set(res, a);
-    mpz_clear(i);
+    size = i;
+    --i;
+    for ( j = 0; j < size; ++j ) {
+        arr[j] = a[i];
+        --i;
+    }
+    free(a); a = NULL;
+    return size;
 }
 
 /**
- * Performs fast-modular exponentiation
+ * Performs fast modular exponentiation
  */
-void fastModularExp( 
+void fastExp( int *res, int x, int h, int n )
+{
+    int *bin, i, y, size;
+    char binStr[STR];
+
+    /* Binary is at most the value of h */
+    bin = calloc(sizeof(int*), h);
+    memset(bin, -1, sizeof(bin));
+
+    size = decToBin( bin, h );
+    y = x;
+
+    for ( i = 1; i < size; ++i ) {
+        y = ((int)pow(y, 2)) % n;
+        if ( bin[i] == 1 )
+            y = (y * x) % n;
+    }
+    *res = y;
+    free(bin); bin = NULL;
+}
