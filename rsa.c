@@ -141,10 +141,8 @@ void findE( mpz_t e, mpz_t fi )
         mpz_set(e, i);
         mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
         /* In Standard C: gcdRes == 1 */
-        if ( mpz_cmp_ui(gcdRes, 1) == 0 ) {
+        if ( mpz_cmp_ui(gcdRes, 1) == 0 )
             stop = TRUE;
-            printf("TRUE\n");
-        }
         mpz_add_ui(i, i, 1);
     }
 }
