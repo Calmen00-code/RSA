@@ -11,7 +11,7 @@ all : $(EXEC) $(EXECT)
 $(EXEC) : $(OBJ)
 	$(CC) $(OBJ) $(LFLAGS) -o $(EXEC)
 
-main.o : main.c lehmann.h file.h
+main.o : main.c lehmann.h file.h rsa.h
 	$(CC) $(CFLAGS) -c main.c
 
 lehmann.o : lehmann.c lehmann.h

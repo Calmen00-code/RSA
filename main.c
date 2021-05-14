@@ -10,6 +10,7 @@
 #include "header.h"
 #include "lehmann.h"
 #include "file.h"
+#include "rsa.h"
 
 /**
  * Check if the current character of 
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
     } else {
         size = readFileSize( argv[1] );
         content = read( argv[1] );
-        
+ 
         for ( i = 0; i < size; ++i ) {
             for ( j = 0; content[i][j] != '\0'; ++j ) {
                 /* No padding required */
@@ -73,6 +74,7 @@ int main(int argc, char* argv[])
             }
         }
         printf("%s\n", asciiMsg);
+        /* Encryption( asciiMsg, size );    Public Key = n, e */
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;

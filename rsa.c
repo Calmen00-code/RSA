@@ -3,12 +3,85 @@
  * Purpose: Handling all function related to the RSA
  */
 
-#include <stdio.h>
+#include <stdio.h> /* FIXME: Remove after testing */
+#include <string.h>
+#include <gmp.h>    /* Use to compute large integer */
 #include "euclidean.h"
 #include "rsa.h"
 #include "lehmann.h"
 #include "maths.h"
 #include "header.h"
+
+/**
+ * This function will call all the function 
+ * responsible for RSA Encryption
+ */
+void Encryption( char asciiMsg[], int size )
+{
+    char ciphertext[STR];
+    int i;
+    int *asciiArr;
+    mpz_t n, e, d;
+
+    /* Initialising mpz structure */
+    mpz_init(n); mpz_set_ui(n, 0);
+    mpz_init(e); mpz_set_ui(e, 0);
+    mpz_init(d); mpz_set_ui(d, 0);
+
+    /* Generating public key */
+    generateKey( e, n, d );
+
+    /* Parsed asciiMsg into integer array 
+       to allow integer computation */
+    getAsciiArray( asciiMsg, asciiArr );
+
+    for ( i = 0; i < size; ++i ) {
+        encrypt( asciiArr[i], e, n );
+}
+
+/**
+ * Parsed each of the asciiMsg separated by ' '
+ * and store them into every entry of asciiArr
+ */
+void getAsciiArray( char asciiMsg[], int *asciiArr )
+{
+    char str[STR], *token;
+    int i, arrSize;
+
+    strcpy(str, asciiMsg);
+    arrSize = getArraySize( asciiMsg );
+    arr = calloc(sizeof(int*), arrSize);
+
+    /* Get the first token */
+    token = strtok(str, " ");
+    i = 0;
+    while ( token != NULL ) {
+        arr[i] = atoi(token);
+        token = strtok(NULL, " ");
+        ++i;
+    }
+} 
+
+/**
+ * Return the correct size for the asciiArr
+ */
+int getArraySize( char str[] )
+{
+    int i, size;
+
+    size = 0;
+    for ( i = 0; str[i] != '\0'; ++i ) {
+        if ( str[i] == ' ' )
+            ++size;
+    }
+    ++size;
+    return size;
+}
+
+/**
+ * Performs the encryption on block
+void encrypt( 
+ */
 
 void random( mpz_t result, mpz_t lower, 
              mpz_t upper, gmp_randstate_t state )
