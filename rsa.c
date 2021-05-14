@@ -35,8 +35,8 @@ void random( mpz_t result, mpz_t lower,
  * Call random function to generate random numbers
  * and return the randomised prime numbers
  */
-void primalityTest( mpz_t randNum, mpz_t lower, 
-                    mpz_t upper )
+void generateRandomPrime( mpz_t randNum, mpz_t lower, 
+                          mpz_t upper )
 {
     gmp_randstate_t state;
     int stop = FALSE; 
@@ -47,6 +47,7 @@ void primalityTest( mpz_t randNum, mpz_t lower,
     /* Iterate until prime is acquired */
     while ( stop == FALSE ) {
         random( randNum, lower, upper, state );
+        /* Primality Test */
         if ( lehmann( randNum ) == TRUE )
             stop = TRUE;
     }
@@ -83,8 +84,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_pow_ui(upper, base, 1024);
 
     /* Generates prime for p and q */
-    primalityTest( p, lower, upper );
-    primalityTest( q, lower, upper );
+    generateRandomPrime( p, lower, upper );
+    generateRandomPrime( q, lower, upper );
 
     /* Computing n */
     mpz_mul(n, p, q);
