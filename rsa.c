@@ -169,6 +169,10 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     generateRandomPrime( p, lower, upper );
     generateRandomPrime( q, lower, upper );
 
+    /* FIXME: Remove after testing */
+    mpz_set_ui(p, 3);
+    mpz_set_ui(q, 11);
+
     /* Computing n */
     mpz_mul(n, p, q);
 

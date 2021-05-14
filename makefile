@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Werror -Wall -ansi -pedantic -g -lm
+CFLAGS = -Werror -Wall -pedantic -g -lm
 LFLAGS = -lgmp
 OBJ = main.o lehmann.o maths.o file.o rsa.o euclidean.o
 OBJT = test.o rsa.o lehmann.o maths.o euclidean.o # For testing
