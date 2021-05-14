@@ -4,7 +4,11 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
 #include "maths.h"
+#include "header.h"
 
 int power( int num, int exp )
 {
@@ -51,11 +55,10 @@ int decToBin( int *arr, int n )
 void fastExp( int *res, int x, int h, int n )
 {
     int *bin, i, y, size;
-    char binStr[STR];
 
     /* Binary is at most the value of h */
-    bin = calloc(sizeof(int*), h);
-    memset(bin, -1, sizeof(bin));
+    bin = calloc(sizeof(int), h);
+    memset(bin, -1, sizeof(int));
 
     size = decToBin( bin, h );
     y = x;

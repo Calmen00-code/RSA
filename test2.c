@@ -45,8 +45,8 @@ void fastExp( int *res, int x, int h, int n )
     char binStr[STR];
 
     /* Binary is at most the value of h */
-    bin = calloc(sizeof(int*), h);
-    memset(bin, -1, sizeof(bin));
+    bin = calloc(sizeof(int), h);
+    memset(bin, -1, sizeof(int));
 
     size = decToBin( bin, h );
     y = x;
@@ -62,17 +62,6 @@ void fastExp( int *res, int x, int h, int n )
 
 int main()
 {
-    int res;
-    fastExp( &res, 4, 3, 33 );
-    printf("%d\n", res);
-    return 0;
-}
-
-/*
----------- Decimal To Binary 
-    int i;
-    for ( i = 1; i < 1000; ++i )
-        printf("%d\n", 3%i);
     int arr[1000], i;
 
     memset(arr, -1, sizeof(arr));    
@@ -82,6 +71,16 @@ int main()
             printf("%d", arr[i]);
     }
     printf("\n");
+/*
+    int res;
+    fastExp( &res, 4, 3, 33 );
+    printf("%d\n", res);
+*/
+    return 0;
+}
+
+/*
+---------- Decimal To Binary 
 */
 
 /*

@@ -4,6 +4,7 @@
  */
 
 #include <stdio.h> /* FIXME: Remove after testing */
+#include <stdlib.h>
 #include <string.h>
 #include <gmp.h>    /* Use to compute large integer */
 #include "euclidean.h"
@@ -18,9 +19,9 @@
  */
 void Encryption( char asciiMsg[], int size )
 {
-    char ciphertext[STR];
-    int i;
-    int *asciiArr;
+    /* char ciphertext[STR]; */
+    int i, c;
+    int *asciiArr, arrSize;
     mpz_t n, e, d;
 
     /* Initialising mpz structure */
@@ -31,12 +32,19 @@ void Encryption( char asciiMsg[], int size )
     /* Generating public key */
     generateKey( e, n, d );
 
+    /* Allocating asciiArr */
+    arrSize = getArraySize( asciiMsg );
+    asciiArr = calloc(sizeof(int*), arrSize);
+
     /* Parsed asciiMsg into integer array 
        to allow integer computation */
     getAsciiArray( asciiMsg, asciiArr );
 
     for ( i = 0; i < size; ++i ) {
-        encrypt( asciiArr[i], e, n );
+        fastExp( &c, asciiArr[i], 
+            mpz_get_ui(e), mpz_get_ui(n) );
+        printf("%d\n", c);
+    }
 }
 
 /**
@@ -46,17 +54,15 @@ void Encryption( char asciiMsg[], int size )
 void getAsciiArray( char asciiMsg[], int *asciiArr )
 {
     char str[STR], *token;
-    int i, arrSize;
+    int i;
 
     strcpy(str, asciiMsg);
-    arrSize = getArraySize( asciiMsg );
-    arr = calloc(sizeof(int*), arrSize);
 
     /* Get the first token */
     token = strtok(str, " ");
     i = 0;
     while ( token != NULL ) {
-        arr[i] = atoi(token);
+        asciiArr[i] = atoi(token);
         token = strtok(NULL, " ");
         ++i;
     }
@@ -77,11 +83,6 @@ int getArraySize( char str[] )
     ++size;
     return size;
 }
-
-/**
- * Performs the encryption on block
-void encrypt( 
- */
 
 void random( mpz_t result, mpz_t lower, 
              mpz_t upper, gmp_randstate_t state )
