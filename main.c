@@ -46,6 +46,7 @@ int main(int argc, char* argv[])
     int size;
     char **content;
     char asciiStr[STR], asciiMsg[STR];
+    char ciphertext[STR]; /*, plaintext[STR]; */
     int ascii;
 
     if ( argc != 2 ) {
@@ -79,7 +80,8 @@ int main(int argc, char* argv[])
             }
         }
         printf("ascii message: %s\n", asciiMsg);
-        Encryption( asciiMsg );    /* Public Key = n, e */
+        Encryption( asciiMsg, ciphertext );    /* Public Key = n, e */
+        printf("ciphertext: %s\n", ciphertext);
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;

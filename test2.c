@@ -60,10 +60,25 @@ void fastExp( int *res, int x, int h, int n )
     free(bin); bin = NULL;
 }
 
+int power( int num, int exp )
+{
+    int i;
+    int total = 1;
+
+    if ( exp == 0 )
+        total = 1;
+    else
+    {
+        for ( i = 0; i < exp; ++i )
+            total *= num;
+    }
+    return total;
+}
+
 int main()
 {
-    char a = '\n';
-    printf("%d\n", a);
+    int num = 8, exp = 4;
+    printf("%d\n", power( num, exp ));
 /*
     int res;
     fastExp( &res, 4, 3, 33 );

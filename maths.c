@@ -63,13 +63,18 @@ void fastExp( int *res, int x, int h, int n )
 
     size = decToBin( bin, h );
     y = x;
+    printf("x: %d\n", x);
 
     for ( i = 1; i < size; ++i ) {
-        y = ((long long int)pow(y, 2)) % n;
-        if ( bin[i] == 1 )
+        printf("y (SQ): %lld\n", (long long int)power(y, 2));
+        y = power(y, 2) % n;
+        if ( bin[i] == 1 ) {
             y = (y * x) % n;
+            printf("y (MUL): %d\n", y);
+        }
     }
     *res = y;
+    printf("END\n\n");
     free(bin); bin = NULL;
 }
 

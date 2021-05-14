@@ -18,11 +18,12 @@
  * This function will call all the function 
  * responsible for RSA Encryption
  */
-void Encryption( char asciiMsg[] )
+void Encryption( char asciiMsg[], char ciphertext[] )
 {
     int i, c;
     int *asciiArr, arrSize;
     mpz_t n, e, d;
+    char cipher[STR];
 
     /* Initialising mpz structure */
     mpz_init(n); mpz_set_ui(n, 0);
@@ -40,27 +41,17 @@ void Encryption( char asciiMsg[] )
        to allow integer computation */
     getAsciiArray( asciiMsg, asciiArr );
 
-    /* FIXME: Remove after testing */
-/*
-    printf("e: ");
-    mpz_out_str(stdout, 10, e);
-    printf("\n");
-    printf("n: ");
-    mpz_out_str(stdout, 10, n);
-    printf("\n");
-    printf("d: ");
-    mpz_out_str(stdout, 10, d);
-    printf("\n");
-*/
-
-    asciiArr[0] = 4;    /* FIXME */
     for ( i = 0; i < arrSize - 1; ++i ) {
         fastExp( &c, asciiArr[i], 
             mpz_get_ui(e), mpz_get_ui(n) );
         printf("c: %d\n", c);
+        sprintf( cipher, "%d", c );
+        strcat( ciphertext, cipher );
+        strcat( ciphertext, " " );
     }
-    printf("\n");
 }
+
+/* void Decryption( char cipherText[] ) */
 
 /**
  * Parsed each of the asciiMsg separated by ' '
@@ -175,10 +166,6 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Generates prime for p and q */
     generateRandomPrime( p, lower, upper );
     generateRandomPrime( q, lower, upper );
-
-    /* FIXME: Remove after testing */
-    mpz_set_ui(p, 3);
-    mpz_set_ui(q, 11);
 
     /* Computing n */
     mpz_mul(n, p, q);
