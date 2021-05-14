@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gmp.h>    /* Use to compute large integer */
+#include <time.h>
 #include "euclidean.h"
 #include "rsa.h"
 #include "lehmann.h"
@@ -17,9 +18,8 @@
  * This function will call all the function 
  * responsible for RSA Encryption
  */
-void Encryption( char asciiMsg[], int size )
+void Encryption( char asciiMsg[] )
 {
-    /* char ciphertext[STR]; */
     int i, c;
     int *asciiArr, arrSize;
     mpz_t n, e, d;
@@ -34,13 +34,21 @@ void Encryption( char asciiMsg[], int size )
 
     /* Allocating asciiArr */
     arrSize = getArraySize( asciiMsg );
-    asciiArr = calloc(sizeof(int*), arrSize);
+    asciiArr = calloc(sizeof(int), arrSize);
 
     /* Parsed asciiMsg into integer array 
        to allow integer computation */
     getAsciiArray( asciiMsg, asciiArr );
 
-    for ( i = 0; i < size; ++i ) {
+    /* FIXME: Remove after testing */
+    printf("e: ");
+    mpz_out_str(stdout, 10, e);
+    printf("\n");
+    printf("n: ");
+    mpz_out_str(stdout, 10, n);
+    printf("\n");
+
+    for ( i = 0; i < arrSize; ++i ) {
         fastExp( &c, asciiArr[i], 
             mpz_get_ui(e), mpz_get_ui(n) );
         printf("%d\n", c);
@@ -91,7 +99,6 @@ void random( mpz_t result, mpz_t lower,
     mpz_t range;
 
     /* Initialising randUpper and randLower */
-    /* mpz_init(randNum); mpz_set_ui(randNum, 0); */
     mpz_init(range); mpz_set_ui(range, 0);
 
     /* Computing range for random number */
@@ -112,12 +119,13 @@ void random( mpz_t result, mpz_t lower,
 void generateRandomPrime( mpz_t randNum, mpz_t lower, 
                           mpz_t upper )
 {
-    gmp_randstate_t state;
     int stop = FALSE; 
- 
-    /* Initialising random seed */
-    gmp_randinit_default(state);
+    gmp_randstate_t state;
 
+    /* Initialising random seed */
+    gmp_randinit_mt(state);
+    gmp_randseed_ui(state, time(NULL));
+ 
     /* Iterate until prime is acquired */
     while ( stop == FALSE ) {
         random( randNum, lower, upper, state );

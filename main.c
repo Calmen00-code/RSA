@@ -73,8 +73,7 @@ int main(int argc, char* argv[])
                 memset(asciiStr, 0, sizeof(asciiStr));  /* Empty the string */
             }
         }
-        printf("%s\n", asciiMsg);
-        /* Encryption( asciiMsg, size );    Public Key = n, e */
+        Encryption( asciiMsg );    /* Public Key = n, e */
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
