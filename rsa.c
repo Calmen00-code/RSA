@@ -86,9 +86,6 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     primalityTest( p, lower, upper );
     primalityTest( q, lower, upper );
 
-    /* FIXME: Remove after testing */
-    /* mpz_set_ui(p, 263); mpz_set_ui(q, 587); */
-
     /* Computing n */
     mpz_mul(n, p, q);
 
@@ -97,16 +94,10 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_mul(fi, fiP, fiQ);
 
     /* Finding e */
-    printf("Fi: ");
-    mpz_out_str(stdout, 10, fi);
-    printf("\n");
     findE(e, fi); 
-    printf("e: ");
-    mpz_out_str(stdout, 10, e);
-    printf("\n");
 
+    /* Finding d */
     mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
-    /* extendedEuclidean( gcdRes, e, fi, invOne, invTwo ); */
 
     /* Assign the positive numbers to d */
     if ( mpz_cmp_ui( invOne, 0 ) > 0 )
@@ -114,9 +105,6 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     else
         mpz_set(d, invTwo);
     
-    /* FIXME: Remove after testing */
-    /* mpz_set_ui(e, 683); mpz_set_ui(d, 81599); */
-
     /* Deallocating the structure */
     mpz_clear(lower); mpz_clear(upper);
     mpz_clear(base); mpz_clear(p);
