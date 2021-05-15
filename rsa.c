@@ -41,15 +41,11 @@ void Encryption( char asciiMsg[], char ciphertext[],
     for ( i = 0; i < arrSize - 1; ++i ) {
         mpz_set_ui(x, asciiArr[i]);
         fastExp( c, x, e, n );
-        printf("c: ");
-        mpz_out_str(stdout, 10, c);
-        printf("\n");
 
         mpz_get_str( cipher, 10, c );
         strcat( ciphertext, cipher );
         strcat( ciphertext, " " );
     }
-    printf("\n");   /* FIXME */
     free(asciiArr); asciiArr = NULL;
     /* Deallocating mpz */
     mpz_clear(c); mpz_clear(x);
@@ -79,18 +75,12 @@ void Decryption( char ciphertext[], char plaintext[],
     getIntArray( ciphertext, cipherArr );
 
     for ( i = 0; i < arrSize - 1; ++i ) {
-        printf("cipherArr[i]: %d\n", cipherArr[i]);
         mpz_set_ui(c, cipherArr[i]);
         fastExp( m, c, d, n );
-        printf("m: ");
-        mpz_out_str(stdout, 10, m);
-        printf("\n");
-
         mpz_get_str( plain, 10, m );
         strcat( plaintext, plain );
         strcat( plaintext, " " );
     }
-    printf("\n");
     free(cipherArr); cipherArr = NULL;
     /* Deallocating mpz */
     mpz_clear(m); mpz_clear(c);
@@ -213,12 +203,6 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* FIXME */ 
     mpz_set_ui(p, 263);
     mpz_set_ui(q, 587);
-    printf("p: ");
-    mpz_out_str(stdout, 10, p);
-    printf("\n");
-    printf("q: ");
-    mpz_out_str(stdout, 10, q);
-    printf("\n");
 
     /* Computing n */
     mpz_mul(n, p, q);
