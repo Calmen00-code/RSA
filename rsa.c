@@ -182,8 +182,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(modInvTwo); mpz_set_ui(modInvTwo, 0);
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
-    /* Taking key of bits between 64 to 1024 */
-    mpz_pow_ui(range, base, 1024);
+    /* Taking key of bits between 64 */
+    mpz_pow_ui(range, base, 64);
 
     /* Initialising random seed */
     gmp_randinit_mt(state);
