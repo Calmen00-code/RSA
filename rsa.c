@@ -210,6 +210,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Computing fi */
     mpz_sub_ui(fiP, p, 1); mpz_sub_ui(fiQ, q, 1);
     mpz_mul(fi, fiP, fiQ);
+    printf("fi: ");
+    mpz_out_str(stdout, 10, fi);
+    printf("\n");
 
     /* Finding e */
     findE(e, fi); 
