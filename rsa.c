@@ -192,6 +192,12 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Generates prime for p and q */
     generateRandomPrime( p, range );
     generateRandomPrime( q, range );
+    printf("p: ");
+    mpz_out_str(stdout, 10, p);
+    printf("\n");
+    printf("q: ");
+    mpz_out_str(stdout, 10, q);
+    printf("\n");
 
     /* FIXME */ 
 /*
