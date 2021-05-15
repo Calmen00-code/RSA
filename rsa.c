@@ -274,12 +274,10 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
  */
 void findE( mpz_t e, mpz_t fi )
 {
-    mpz_t i, gcdRes, invOne, invTwo;
+    mpz_t i, gcdRes;
     int stop = FALSE;
 
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
-    mpz_init(invOne); mpz_set_ui(invOne, 0);
-    mpz_init(invTwo); mpz_set_ui(invTwo, 0);
 
     /*
      * i is not set to 1 as e = 1 is 
@@ -291,7 +289,7 @@ void findE( mpz_t e, mpz_t fi )
     while ( mpz_cmp(i, fi) < 0 && stop == FALSE ) {
         /* Setting e = i */
         mpz_set(e, i);
-        mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
+        mpz_gcd( gcdRes, e, fi );
         /* In Standard C: gcdRes == 1 */
         if ( mpz_cmp_ui(gcdRes, 1) == 0 )
             stop = TRUE;
