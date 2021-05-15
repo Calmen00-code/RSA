@@ -23,7 +23,7 @@ void Encryption( char asciiMsg[], char ciphertext[] )
     int i;
     int *asciiArr, arrSize;
     mpz_t c, n, e, d, x;
-    /* char cipher[STR]; */
+    char cipher[STR];
 
     /* Initialising mpz structure */
     mpz_init(n); mpz_set_ui(n, 0);
@@ -32,8 +32,19 @@ void Encryption( char asciiMsg[], char ciphertext[] )
     mpz_init(c); mpz_set_ui(c, 0);
     mpz_init(x); mpz_set_ui(x, 0);
 
-    /* Generating public key */
+    /* Generating public and private key */
     generateKey( e, n, d );
+
+    /* FIXME */
+    printf("e: ");
+    mpz_out_str(stdout, 10, e);
+    printf("\n");
+    printf("n: ");
+    mpz_out_str(stdout, 10, n);
+    printf("\n");
+    printf("d: ");
+    mpz_out_str(stdout, 10, d);
+    printf("\n\n");
 
     /* Allocating asciiArr */
     arrSize = getArraySize( asciiMsg );
@@ -49,11 +60,10 @@ void Encryption( char asciiMsg[], char ciphertext[] )
         printf("c: ");
         mpz_out_str(stdout, 10, c);
         printf("\n");
-/*
-        sprintf( cipher, "%d", c );
+
+        mpz_get_str( cipher, 10, c );
         strcat( ciphertext, cipher );
         strcat( ciphertext, " " );
-*/
     }
 }
 
@@ -173,6 +183,16 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     generateRandomPrime( p, lower, upper );
     generateRandomPrime( q, lower, upper );
 
+    /* FIXME */ 
+    mpz_set_ui(p, 35);
+    mpz_set_ui(q, 101);
+    printf("p: ");
+    mpz_out_str(stdout, 10, p);
+    printf("\n");
+    printf("q: ");
+    mpz_out_str(stdout, 10, q);
+    printf("\n");
+
     /* Computing n */
     mpz_mul(n, p, q);
 
@@ -183,6 +203,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Finding e */
     findE(e, fi); 
 
+    /* FIXME */
+    /* mpz_set_ui(e, 683); */
+
     /* Finding d */
     mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
 
@@ -191,6 +214,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
         mpz_set(d, invOne);
     else
         mpz_set(d, invTwo);
+
+    /* FIXME */
+    /* mpz_set_ui(d, 81599); */
     
     /* Deallocating the structure */
     mpz_clear(lower); mpz_clear(upper);
