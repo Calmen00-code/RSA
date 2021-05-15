@@ -165,6 +165,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_t range, base;
     mpz_t p, q, fi, fiP, fiQ;
     mpz_t modInvOne, modInvTwo;
+    mpz_t mulInvOne, mulInvTwo;
     mpz_t gcdRes, invOne, invTwo;
     gmp_randstate_t state;
 
@@ -180,6 +181,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(invTwo); mpz_set_ui(invTwo, 0);
     mpz_init(modInvOne); mpz_set_ui(modInvOne, 0);
     mpz_init(modInvTwo); mpz_set_ui(modInvTwo, 0);
+    mpz_init(mulInvOne); mpz_set_ui(mulInvOne, 0);
+    mpz_init(mulInvTwo); mpz_set_ui(mulInvTwo, 0);
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
     /* Taking key of bits between 64 */
@@ -192,6 +195,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Generates prime for p and q */
     generateRandomPrime( p, range, state );
     generateRandomPrime( q, range, state );
+
+    /* FIXME */
+    mpz_set_ui(p,3); mpz_set_ui(q,11);
     printf("p: ");
     mpz_out_str(stdout, 10, p);
     printf("\n");
@@ -211,7 +217,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Computing fi */
     mpz_sub_ui(fiP, p, 1); mpz_sub_ui(fiQ, q, 1);
     mpz_mul(fi, fiP, fiQ);
-/*
+/*  FIXME
     printf("fi: ");
     mpz_out_str(stdout, 10, fi);
     printf("\n");
@@ -225,33 +231,38 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
 
     /* Finding d */
     mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
+    printf("invOne: ");
+    mpz_out_str(stdout, 10, invOne);
+    printf("\n");
+    printf("invTwo: ");
+    mpz_out_str(stdout, 10, invTwo);
+    printf("\n");
 
-    /* Assign the positive numbers to d */
-    if ( mpz_cmp_ui( invOne, 0 ) < 0 ) {
-        mpz_mod(modInvOne, e, fi);
+    if ( mpz_cmp_ui( invOne, 0 ) > 0 ) {
+        mpz_mul(mulInvOne, invOne, fi);
+        mpz_mod(modInvOne, mulInvOne, fi);
         /* Reject if the mod result is 0 */
-        if ( mpz_cmp_ui(modInvOne, 0 ) == 0 )
-            mpz_add(d, invOne, fi);
-        else {
+        if ( mpz_cmp_ui( modInvOne, 0 ) == 0 ) {
             /* Add with fi if negative */
             if ( mpz_cmp_ui( invTwo, 0 ) < 0 )
                 mpz_add(d, invTwo, fi );
-            else
+            else /* Otherwise just assign */
                 mpz_set(d, invTwo);
-        }
+        } else  /* Assign if result is not 0 */
+            mpz_add(d, invOne, fi);
     }
-    else if ( mpz_cmp_ui( invTwo, 0 ) < 0 ) {
-        mpz_mod(modInvTwo, e, fi);
+    else if ( mpz_cmp_ui( invTwo, 0 ) > 0 ) {
+        mpz_mul(mulInvTwo, invTwo, e);
+        mpz_mod(modInvTwo, mulInvTwo, e);
         /* Reject if the mod result is 0 */
-        if ( mpz_cmp_ui(modInvTwo, 0 ) == 0 )
-            mpz_add(d, invTwo, fi);
-        else {
+        if ( mpz_cmp_ui(modInvTwo, 0 ) == 0 ) {
             /* Add with fi if negative */
             if ( mpz_cmp_ui( invOne, 0 ) < 0 )
                 mpz_add(d, invOne, fi );
-            else
+            else /* Otherwise just assign */
                 mpz_set(d, invOne);
-        }
+        } else  /* Assign if result is not 0 */
+            mpz_add(d, invTwo, fi);
     }
 
     /* FIXME */
@@ -265,6 +276,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_clear(invOne); mpz_clear(invTwo);
     mpz_clear(gcdRes); mpz_clear(modInvOne); 
     mpz_clear(modInvTwo); gmp_randclear(state);
+    mpz_clear(mulInvOne); mpz_clear(mulInvTwo); 
 }
 
 /**
