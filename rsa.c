@@ -204,24 +204,28 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     generateRandomPrime( q, lower, upper );
 
     /* FIXME */ 
-    mpz_set_ui(p, 3);   /* 263 */
-    mpz_set_ui(q, 11); /* 587 */
+/*
+    mpz_set_ui(p, 263);
+    mpz_set_ui(q, 587); 
+*/
 
     /* Computing n */
     mpz_mul(n, p, q);
 
     /* Computing fi */
+/*
     mpz_sub_ui(fiP, p, 1); mpz_sub_ui(fiQ, q, 1);
     mpz_mul(fi, fiP, fiQ);
     printf("fi: ");
     mpz_out_str(stdout, 10, fi);
     printf("\n");
+*/
 
     /* Finding e */
     findE(e, fi); 
 
     /* FIXME */
-    mpz_set_ui(e, 3); /* 683 */
+    mpz_set_ui(e, 683); 
 
     /* Finding d */
     mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
