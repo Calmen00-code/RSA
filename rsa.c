@@ -78,7 +78,7 @@ void Decryption( char ciphertext[], char plaintext[],
        to allow integer computation */
     getIntArray( ciphertext, cipherArr );
 
-    for ( i = 0; i < arrSize; ++i ) {
+    for ( i = 0; i < arrSize - 1; ++i ) {
         printf("cipherArr[i]: %d\n", cipherArr[i]);
         mpz_set_ui(c, cipherArr[i]);
         fastExp( m, c, d, n );

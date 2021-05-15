@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     int size;
     char **content;
     char asciiStr[STR], asciiMsg[STR];
-    char ciphertext[STR], plaintext[STR];
+    char ciphertext[STR], plaintext[STR];/* , plain[STR]; */
     int ascii;
     mpz_t n, e, d;
 
@@ -100,6 +100,21 @@ int main(int argc, char* argv[])
         Decryption( ciphertext, plaintext, d, n );
         printf("ciphertext: %s\n", ciphertext);
         printf("plaintext: %s\n", plaintext);
+
+
+        char charStr[STR], convert[STR], cVal;
+        j = 1;
+        for ( i = 0; plaintext[i] != '\0'; ++i ) {
+            if ( j == 3 ) {
+                if ( plaintext[i] == '0' ) {
+                    --i;
+                    cVal = toChar( plaintext, i, 1 );
+                } else
+                    cVal = toChar( plaintext, i, 2 );
+                sprintf( charStr, "%c", cVal );
+                strcat( convert, charStr );
+            } else
+                ++j;
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
