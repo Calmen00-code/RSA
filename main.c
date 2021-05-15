@@ -46,13 +46,18 @@ int main(int argc, char* argv[])
     int size;
     char **content;
     char asciiStr[STR], asciiMsg[STR];
-    char ciphertext[STR]; /*, plaintext[STR]; */
+    char ciphertext[STR], plaintext[STR];
     int ascii;
+    mpz_t n, e, d;
 
     if ( argc != 2 ) {
         printf("To run the program,\n");
         printf("\t  ./rsa [filename.txt]\n");
     } else {
+        mpz_init(n); mpz_set_ui(n, 0);
+        mpz_init(e); mpz_set_ui(e, 0);
+        mpz_init(d); mpz_set_ui(d, 0);
+
         size = readFileSize( argv[1] );
         content = read( argv[1] );
  
@@ -79,12 +84,27 @@ int main(int argc, char* argv[])
                 memset(asciiStr, 0, sizeof(asciiStr));  /* Empty the string */
             }
         }
+        generateKey( e, n, d );
         printf("ascii message: %s\n", asciiMsg);
-        Encryption( asciiMsg, ciphertext );    /* Public Key = n, e */
+        /* FIXME */
+        printf("e: ");
+        mpz_out_str(stdout, 10, e);
+        printf("\n");
+        printf("n: ");
+        mpz_out_str(stdout, 10, n);
+        printf("\n");
+        printf("d: ");
+        mpz_out_str(stdout, 10, d);
+        printf("\n\n");
+        Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
+        Decryption( ciphertext, plaintext, d, n );
         printf("ciphertext: %s\n", ciphertext);
+        printf("plaintext: %s\n", plaintext);
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
+        /* Deallocating mpz */
+        mpz_clear(n); mpz_clear(e); mpz_clear(d);
     }
     return 0;
 }

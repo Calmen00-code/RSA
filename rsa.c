@@ -18,33 +18,17 @@
  * This function will call all the function 
  * responsible for RSA Encryption
  */
-void Encryption( char asciiMsg[], char ciphertext[] )
+void Encryption( char asciiMsg[], char ciphertext[], 
+                 mpz_t n, mpz_t e )
 {
     int i;
     int *asciiArr, arrSize;
-    mpz_t c, n, e, d, x;
+    mpz_t c, x;
     char cipher[STR];
 
     /* Initialising mpz structure */
-    mpz_init(n); mpz_set_ui(n, 0);
-    mpz_init(e); mpz_set_ui(e, 0);
-    mpz_init(d); mpz_set_ui(d, 0);
     mpz_init(c); mpz_set_ui(c, 0);
     mpz_init(x); mpz_set_ui(x, 0);
-
-    /* Generating public and private key */
-    generateKey( e, n, d );
-
-    /* FIXME */
-    printf("e: ");
-    mpz_out_str(stdout, 10, e);
-    printf("\n");
-    printf("n: ");
-    mpz_out_str(stdout, 10, n);
-    printf("\n");
-    printf("d: ");
-    mpz_out_str(stdout, 10, d);
-    printf("\n\n");
 
     /* Allocating asciiArr */
     arrSize = getArraySize( asciiMsg );
@@ -52,7 +36,7 @@ void Encryption( char asciiMsg[], char ciphertext[] )
 
     /* Parsed asciiMsg into integer array 
        to allow integer computation */
-    getAsciiArray( asciiMsg, asciiArr );
+    getIntArray( asciiMsg, asciiArr );
 
     for ( i = 0; i < arrSize - 1; ++i ) {
         mpz_set_ui(x, asciiArr[i]);
@@ -65,26 +49,69 @@ void Encryption( char asciiMsg[], char ciphertext[] )
         strcat( ciphertext, cipher );
         strcat( ciphertext, " " );
     }
+    printf("\n");   /* FIXME */
+    free(asciiArr); asciiArr = NULL;
+    /* Deallocating mpz */
+    mpz_clear(c); mpz_clear(x);
 }
 
-/* void Decryption( char cipherText[] ) */
+/**
+ * Decrypt ciphtertext back to plaintext using d as private key
+ */
+void Decryption( char ciphertext[], char plaintext[], 
+                 mpz_t d, mpz_t n )
+{
+    int i;
+    int *cipherArr, arrSize;
+    char plain[STR];
+    mpz_t m, c;
+
+    /* Initialising mpz structure */
+    mpz_init(c); mpz_set_ui(c, 0);
+    mpz_init(m); mpz_set_ui(m, 0);
+
+    /* Allocating cipherArr */
+    arrSize = getArraySize( ciphertext );
+    cipherArr = calloc(sizeof(int), arrSize);
+
+    /* Parsed asciiMsg into integer array 
+       to allow integer computation */
+    getIntArray( ciphertext, cipherArr );
+
+    for ( i = 0; i < arrSize; ++i ) {
+        printf("cipherArr[i]: %d\n", cipherArr[i]);
+        mpz_set_ui(c, cipherArr[i]);
+        fastExp( m, c, d, n );
+        printf("m: ");
+        mpz_out_str(stdout, 10, m);
+        printf("\n");
+
+        mpz_get_str( plain, 10, m );
+        strcat( plaintext, plain );
+        strcat( plaintext, " " );
+    }
+    printf("\n");
+    free(cipherArr); cipherArr = NULL;
+    /* Deallocating mpz */
+    mpz_clear(m); mpz_clear(c);
+} 
 
 /**
  * Parsed each of the asciiMsg separated by ' '
  * and store them into every entry of asciiArr
  */
-void getAsciiArray( char asciiMsg[], int *asciiArr )
+void getIntArray( char text[], int *arr )
 {
     char str[STR], *token;
     int i;
 
-    strcpy(str, asciiMsg);
+    strcpy(str, text);
 
     /* Get the first token */
     token = strtok(str, " ");
     i = 0;
     while ( token != NULL ) {
-        asciiArr[i] = atoi(token);
+        arr[i] = atoi(token);
         token = strtok(NULL, " ");
         ++i;
     }
@@ -184,8 +211,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     generateRandomPrime( q, lower, upper );
 
     /* FIXME */ 
-    mpz_set_ui(p, 35);
-    mpz_set_ui(q, 101);
+    mpz_set_ui(p, 263);
+    mpz_set_ui(q, 587);
     printf("p: ");
     mpz_out_str(stdout, 10, p);
     printf("\n");
@@ -204,7 +231,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     findE(e, fi); 
 
     /* FIXME */
-    /* mpz_set_ui(e, 683); */
+    mpz_set_ui(e, 683);
 
     /* Finding d */
     mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
@@ -216,7 +243,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
         mpz_set(d, invTwo);
 
     /* FIXME */
-    /* mpz_set_ui(d, 81599); */
+    mpz_set_ui(d, 81599);
     
     /* Deallocating the structure */
     mpz_clear(lower); mpz_clear(upper);
