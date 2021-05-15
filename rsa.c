@@ -177,6 +177,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
 {
     mpz_t lower, upper, base;
     mpz_t p, q, fi, fiP, fiQ;
+    mpz_t modInvOne, modInvTwo;
     mpz_t gcdRes, invOne, invTwo;
 
     /* Initialising lower and upper */
@@ -190,6 +191,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(fiQ); mpz_set_ui(fiQ, 0);
     mpz_init(invOne); mpz_set_ui(invOne, 0);
     mpz_init(invTwo); mpz_set_ui(invTwo, 0);
+    mpz_init(modInvOne); mpz_set_ui(modInvOne, 0);
+    mpz_init(modInvTwo); mpz_set_ui(modInvTwo, 0);
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
     /* Taking key of bits between 64 to 1024 */
@@ -201,8 +204,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     generateRandomPrime( q, lower, upper );
 
     /* FIXME */ 
-    mpz_set_ui(p, 263);
-    mpz_set_ui(q, 587);
+    mpz_set_ui(p, 3);   /* 263 */
+    mpz_set_ui(q, 11); /* 587 */
 
     /* Computing n */
     mpz_mul(n, p, q);
@@ -218,19 +221,41 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     findE(e, fi); 
 
     /* FIXME */
-    mpz_set_ui(e, 683);
+    mpz_set_ui(e, 3); /* 683 */
 
     /* Finding d */
     mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
 
     /* Assign the positive numbers to d */
-    if ( mpz_cmp_ui( invOne, 0 ) > 0 )
-        mpz_set(d, invOne);
-    else
-        mpz_set(d, invTwo);
+    if ( mpz_cmp_ui( invOne, 0 ) < 0 ) {
+        mpz_mod(modInvOne, e, fi);
+        /* Reject if the mod result is 0 */
+        if ( mpz_cmp_ui(modInvOne, 0 ) == 0 )
+            mpz_add(d, invOne, fi);
+        else {
+            /* Add with fi if negative */
+            if ( mpz_cmp_ui( invTwo, 0 ) < 0 )
+                mpz_add(d, invTwo, fi );
+            else
+                mpz_set(d, invTwo);
+        }
+    }
+    else if ( mpz_cmp_ui( invTwo, 0 ) < 0 ) {
+        mpz_mod(modInvTwo, e, fi);
+        /* Reject if the mod result is 0 */
+        if ( mpz_cmp_ui(modInvTwo, 0 ) == 0 )
+            mpz_add(d, invTwo, fi);
+        else {
+            /* Add with fi if negative */
+            if ( mpz_cmp_ui( invOne, 0 ) < 0 )
+                mpz_add(d, invOne, fi );
+            else
+                mpz_set(d, invOne);
+        }
+    }
 
     /* FIXME */
-    mpz_set_ui(d, 81599);
+    /* mpz_set_ui(d, 81599); */
     
     /* Deallocating the structure */
     mpz_clear(lower); mpz_clear(upper);
@@ -238,7 +263,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_clear(q); mpz_clear(fi);
     mpz_clear(fiP); mpz_clear(fiQ);
     mpz_clear(invOne); mpz_clear(invTwo);
-    mpz_clear(gcdRes);
+    mpz_clear(gcdRes); mpz_clear(modInvOne); 
+    mpz_clear(modInvTwo);
 }
 
 /**
