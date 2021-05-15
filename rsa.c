@@ -140,14 +140,10 @@ void randomGenerator( mpz_t result, mpz_t range,
  * Call random function to generate random numbers
  * and return the randomised prime numbers
  */
-void generateRandomPrime( mpz_t randNum, mpz_t range ) 
+void generateRandomPrime( mpz_t randNum, mpz_t range,
+                          gmp_randstate_t state ) 
 {
     int stop = FALSE; 
-    gmp_randstate_t state;
-
-    /* Initialising random seed */
-    gmp_randinit_mt(state);
-    gmp_randseed_ui(state, time(NULL));
  
     /* Iterate until prime is acquired */
     while ( stop == FALSE ) {
@@ -156,7 +152,6 @@ void generateRandomPrime( mpz_t randNum, mpz_t range )
         if ( lehmann( randNum ) == TRUE )
             stop = TRUE;
     }
-    gmp_randclear(state);
 }
 
 /**
@@ -171,6 +166,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_t p, q, fi, fiP, fiQ;
     mpz_t modInvOne, modInvTwo;
     mpz_t gcdRes, invOne, invTwo;
+    gmp_randstate_t state;
 
     /* Initialising lower and upper */
     mpz_init(range); mpz_set_ui(range, 0);
@@ -189,9 +185,13 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Taking key of bits between 64 to 1024 */
     mpz_pow_ui(range, base, 1024);
 
+    /* Initialising random seed */
+    gmp_randinit_mt(state);
+    gmp_randseed_ui(state, time(NULL));
+
     /* Generates prime for p and q */
-    generateRandomPrime( p, range );
-    generateRandomPrime( q, range );
+    generateRandomPrime( p, range, state );
+    generateRandomPrime( q, range, state );
     printf("p: ");
     mpz_out_str(stdout, 10, p);
     printf("\n");
@@ -264,7 +264,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_clear(fiP); mpz_clear(fiQ);
     mpz_clear(invOne); mpz_clear(invTwo);
     mpz_clear(gcdRes); mpz_clear(modInvOne); 
-    mpz_clear(modInvTwo);
+    mpz_clear(modInvTwo); gmp_randclear(state);
 }
 
 /**
