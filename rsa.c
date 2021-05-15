@@ -123,23 +123,16 @@ int getArraySize( char str[] )
     return size;
 }
 
-void randomGenerator( mpz_t result, mpz_t lower, 
-             mpz_t upper, gmp_randstate_t state )
+/* FIXME
+void randomGenerator( mpz_t result, mpz_t range, 
+                      gmp_randstate_t state )
 {
-    /* mpz_t randNum, range; */
-    mpz_t range;
-
-    /* Initialising randUpper and randLower */
-    mpz_init(range); mpz_set_ui(range, 0);
-
-    /* Computing range for random number */
-    mpz_sub(range, upper, lower);   /* range = upper - lower */
-    mpz_add_ui(range, range, 1);    /* range = range + 1 */
-
+*/
     /* Generating random number within range */ 
-    mpz_urandomm(result, state, range);
+/*
     mpz_add(result, result, lower);
 }
+*/
 
 /**
  * Used by generateKey to get p and q
@@ -147,8 +140,7 @@ void randomGenerator( mpz_t result, mpz_t lower,
  * Call random function to generate random numbers
  * and return the randomised prime numbers
  */
-void generateRandomPrime( mpz_t randNum, mpz_t lower, 
-                          mpz_t upper )
+void generateRandomPrime( mpz_t randNum, mpz_t range ) 
 {
     int stop = FALSE; 
     gmp_randstate_t state;
@@ -159,7 +151,7 @@ void generateRandomPrime( mpz_t randNum, mpz_t lower,
  
     /* Iterate until prime is acquired */
     while ( stop == FALSE ) {
-        randomGenerator( randNum, lower, upper, state );
+        mpz_urandomm(randNum, state, range);
         /* Primality Test */
         if ( lehmann( randNum ) == TRUE )
             stop = TRUE;
@@ -175,14 +167,13 @@ void generateRandomPrime( mpz_t randNum, mpz_t lower,
  */
 void generateKey( mpz_t e, mpz_t n, mpz_t d )
 {
-    mpz_t lower, upper, base;
+    mpz_t range, base;
     mpz_t p, q, fi, fiP, fiQ;
     mpz_t modInvOne, modInvTwo;
     mpz_t gcdRes, invOne, invTwo;
 
     /* Initialising lower and upper */
-    mpz_init(lower); mpz_set_ui(lower, 0);
-    mpz_init(upper); mpz_set_ui(upper, 0);
+    mpz_init(range); mpz_set_ui(range, 0);
     mpz_init(base); mpz_set_ui(base, 2);
     mpz_init(p); mpz_set_ui(p, 0);
     mpz_init(q); mpz_set_ui(q, 0);
@@ -196,12 +187,11 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
     /* Taking key of bits between 64 to 1024 */
-    mpz_pow_ui(lower, base, 64);
-    mpz_pow_ui(upper, base, 1024);
+    mpz_pow_ui(range, base, 1024);
 
     /* Generates prime for p and q */
-    generateRandomPrime( p, lower, upper );
-    generateRandomPrime( q, lower, upper );
+    generateRandomPrime( p, range );
+    generateRandomPrime( q, range );
 
     /* FIXME */ 
 /*
@@ -213,9 +203,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_mul(n, p, q);
 
     /* Computing fi */
-/*
     mpz_sub_ui(fiP, p, 1); mpz_sub_ui(fiQ, q, 1);
     mpz_mul(fi, fiP, fiQ);
+/*
     printf("fi: ");
     mpz_out_str(stdout, 10, fi);
     printf("\n");
@@ -225,7 +215,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     findE(e, fi); 
 
     /* FIXME */
-    mpz_set_ui(e, 683); 
+    /* mpz_set_ui(e, 683); */
 
     /* Finding d */
     mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
@@ -262,7 +252,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* mpz_set_ui(d, 81599); */
     
     /* Deallocating the structure */
-    mpz_clear(lower); mpz_clear(upper);
+    mpz_clear(range); 
     mpz_clear(base); mpz_clear(p);
     mpz_clear(q); mpz_clear(fi);
     mpz_clear(fiP); mpz_clear(fiQ);
