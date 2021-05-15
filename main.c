@@ -39,7 +39,23 @@ void asciiWrite( char *asciiStr, int ascii )
     else               /* Just parsed as normal */
         sprintf( asciiStr, "%d", ascii );
 }
-   
+
+char toChar( char plaintext[], int end, int nSteps )
+{
+    char tmp[STR], cVal;
+    int i, j, iVal, start;
+
+    start = end - nSteps;
+    j = 0;
+    for ( i = start; i <= nSteps; ++i ) {
+        tmp[j] = plaintext[i];
+        ++j;
+    }
+    iVal = atoi(tmp);
+    cVal = (char)iVal;
+    return cVal;
+}
+ 
 int main(int argc, char* argv[])
 {
     int i, j, k;
@@ -109,12 +125,15 @@ int main(int argc, char* argv[])
                 if ( plaintext[i] == '0' ) {
                     --i;
                     cVal = toChar( plaintext, i, 1 );
+                    j = 1;
                 } else
                     cVal = toChar( plaintext, i, 2 );
                 sprintf( charStr, "%c", cVal );
                 strcat( convert, charStr );
             } else
                 ++j;
+        }
+        printf("%s\n", convert);
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
