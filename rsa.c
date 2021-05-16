@@ -149,7 +149,7 @@ void generateRandomPrime( mpz_t randNum, mpz_t range,
     while ( stop == FALSE ) {
         mpz_urandomm(randNum, state, range);
         /* Primality Test */
-        if ( mpz_probab_prime_p( randNum, 1000 ) == 2 )
+        if ( lehmann( randNum ) == TRUE )
             stop = TRUE;
     }
 }
@@ -193,11 +193,16 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     gmp_randseed_ui(state, time(NULL));
 
     /* Generates prime for p and q */
+/*
     generateRandomPrime( p, range, state );
     generateRandomPrime( q, range, state );
+    mpz_nextprime(p, range);
+    mpz_nextprime(q, p);
+*/
+
 
     /* FIXME */
-    mpz_set_ui(p,3); mpz_set_ui(q,5);
+    mpz_set_ui(p, 118059162163); mpz_set_ui(q, 118059162391);
     printf("p: ");
     mpz_out_str(stdout, 10, p);
     printf("\n");
@@ -222,7 +227,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     printf("\n");
 
     /* Finding e */
-    findE(e, fi); 
+    findE(e, fi);
 
     /* FIXME */
     /* mpz_set_ui(e, 683); */

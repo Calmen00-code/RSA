@@ -44,7 +44,7 @@ class GFG
     // Driver code 
     public static void main (String[] args)
     {
-        for ( int i = 5; i <= 500; ++i ) {
+        for ( int i = 500; i <= 1000; ++i ) {
             if ( lehmann( i, 4 ) == 1 )
                 System.out.println(i);
         }

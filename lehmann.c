@@ -84,7 +84,10 @@ int lehmann( mpz_t prime )
     }
     if ( probPrime > 0.5 )
         isPrime = TRUE;
-    else 
-        isPrime = FALSE;
+/*
+    printf("Prime: "); mpz_out_str(stdout, 10, prime); printf("\n");
+    if ( isPrime == 
+    printf("Prob: \033[0;30m%lf\033[0m\n\n", probPrime);
+*/
     return isPrime;
 }
