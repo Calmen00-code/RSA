@@ -197,7 +197,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     generateRandomPrime( q, range, state );
 
     /* FIXME */
-    mpz_set_ui(p,3); mpz_set_ui(q,11);
+    mpz_set_ui(p,12); mpz_set_ui(q,22);
     printf("p: ");
     mpz_out_str(stdout, 10, p);
     printf("\n");
@@ -239,30 +239,46 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     printf("\n");
 
     if ( mpz_cmp_ui( invOne, 0 ) > 0 ) {
-        mpz_mul(mulInvOne, invOne, fi);
+        mpz_mul(mulInvOne, invOne, e);
         mpz_mod(modInvOne, mulInvOne, fi);
-        /* Reject if the mod result is 0 */
-        if ( mpz_cmp_ui( modInvOne, 0 ) == 0 ) {
-            /* Add with fi if negative */
-            if ( mpz_cmp_ui( invTwo, 0 ) < 0 )
-                mpz_add(d, invTwo, fi );
-            else /* Otherwise just assign */
-                mpz_set(d, invTwo);
-        } else  /* Assign if result is not 0 */
-            mpz_add(d, invOne, fi);
+        /* Accept if the mod result is 1 */
+        if ( mpz_cmp_ui( modInvOne, 1 ) == 0 )
+            mpz_set(d, invOne);
+        else {
+            mpz_mul(mulInvOne, invOne, fi);
+            mpz_mod(modInvOne, mulInvOne, fi);
+            /* Accept the second possibilities */
+            if ( mpz_cmp_ui( modInvOne, 1 ) == 0 )
+                mpz_set(d, invOne);
+            else {
+                /* Add with fi if negative */
+                if ( mpz_cmp_ui( invTwo, 0 ) < 0 )
+                    mpz_add(d, invTwo, fi );
+                else /* Otherwise just assign */
+                    mpz_set(d, invTwo);
+            }
+        }
     }
     else if ( mpz_cmp_ui( invTwo, 0 ) > 0 ) {
         mpz_mul(mulInvTwo, invTwo, e);
-        mpz_mod(modInvTwo, mulInvTwo, e);
-        /* Reject if the mod result is 0 */
-        if ( mpz_cmp_ui(modInvTwo, 0 ) == 0 ) {
-            /* Add with fi if negative */
-            if ( mpz_cmp_ui( invOne, 0 ) < 0 )
-                mpz_add(d, invOne, fi );
-            else /* Otherwise just assign */
-                mpz_set(d, invOne);
-        } else  /* Assign if result is not 0 */
-            mpz_add(d, invTwo, fi);
+        mpz_mod(modInvTwo, mulInvTwo, fi);
+        /* Accept if the mod result is 1 */
+        if ( mpz_cmp_ui( modInvTwo, 1 ) == 0 )
+            mpz_set(d, invTwo);
+        else {
+            mpz_mul(mulInvTwo, invTwo, fi);
+            mpz_mod(modInvTwo, mulInvTwo, fi);
+            /* Accept the second possibilities */
+            if ( mpz_cmp_ui( modInvTwo, 1 ) == 0 )
+                mpz_set(d, invTwo);
+            else {
+                /* Add with fi if negative */
+                if ( mpz_cmp_ui( invOne, 0 ) < 0 )
+                    mpz_add(d, invOne, fi );
+                else /* Otherwise just assign */
+                    mpz_set(d, invOne);
+            }
+        }
     }
 
     /* FIXME */
