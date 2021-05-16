@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gmp.h>
+#include <math.h>
 #include "maths.h"
 #include "lehmann.h"
 #include "header.h"
@@ -26,6 +27,7 @@ int lehmann( mpz_t prime )
 {
     int i;
     int isPrime = TRUE;
+    double probPrime = 0.0;
     mpz_t res, a, e, base, mod, tmp, remainder;
     gmp_randstate_t state;
 
@@ -63,13 +65,22 @@ int lehmann( mpz_t prime )
         /* printf("res: "); mpz_out_str(stdout, 10, res); printf("\n"); */
 
         mpz_sub_ui(tmp, prime, 1);
-        if ( mpz_cmp_ui(res, 1) == 0 || mpz_cmp(res, tmp) == 0 ) {
+        if ( mpz_cmp_ui(res, 1) == 0 ) {
             mpz_urandomm(a, state, prime);
-            mpz_add_ui(a, a, 2);
+            if ( i == 0 )
+                probPrime = 0.5;
+            /* mpz_add_ui(a, a, 2); */
             /* printf("a: "); mpz_out_str(stdout, 10, a); printf("\n"); */
+            ++i;
+        } else if ( mpz_cmp(res, tmp) == 0 ) {
+            mpz_urandomm(a, state, prime);
+            if ( i > 0 )
+                probPrime = 1 - (1/pow(2,i));
             ++i;
         } else
             isPrime = FALSE;
     }
+    if ( probPrime > 0.5 )
+        isPrime = TRUE;
     return isPrime;
 }
