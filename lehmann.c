@@ -39,25 +39,27 @@ int lehmann( mpz_t prime, gmp_randstate_t state )
 
     /* Computing range of mod */
     mpz_pow_ui(mod, base, 1025);
-    // printf("mod: "); mpz_out_str(stdout, 10, mod); printf("\n");
 
     /* Computing e */
     mpz_sub_ui(e, prime, 1);            /* e = prime - 1*/
     mpz_tdiv_qr_ui(e, remainder, e, 2); /* e = e / 2 */
-    // printf("e: "); mpz_out_str(stdout, 10, e); printf("\n");
+    printf("e: "); mpz_out_str(stdout, 10, e); printf("\n");
 
     /* First randomised of a */
     mpz_urandomm(a, state, prime);
+    printf("a: "); mpz_out_str(stdout, 10, a); printf("\n");
 
     i = 0;
     while ( i < NREPEATS_LEHMANN && isPrime == TRUE ) {
         mpz_powm(res, a, e, mod);           /* Compute res = a^e */
-        // printf("a^e: "); mpz_out_str(stdout, 10, res); printf("\n");
+        printf("a^e: "); mpz_out_str(stdout, 10, res); printf("\n");
         mpz_mod(res, res, prime);           /* Computer res mod prime */
+        printf("res: "); mpz_out_str(stdout, 10, res); printf("\n");
 
         mpz_sub_ui(tmp, prime, 1);
         if ( mpz_cmp_ui(res, 1) == 0 || mpz_cmp(res, tmp) == 0 ) {
             mpz_urandomm(a, state, prime);
+            printf("a: "); mpz_out_str(stdout, 10, a); printf("\n");
             ++i;
         } else
             isPrime = FALSE;
