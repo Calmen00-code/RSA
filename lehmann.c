@@ -22,39 +22,45 @@
 #include "lehmann.h"
 #include "header.h"
 
-        mpz_urandomm(a, state, prime);      /* Randomised a */
-        // FIXME mpz_out_str(stdout, 10, a); printf("\n");
-        mpz_powm(powVal, a, exp, mod);      /* Raise a to exp */
-        mpz_mod(r, powVal, prime);          /* r = powVal % prime number */
-
-        /* DEFINITELY not a prime when this IF fails */
-        mpz_sub_ui(tmp, prime, 1);
-        if ( mpz_cmp_d(r, 1) == 0 || mpz_cmp(r, tmp) == 0 ) {
-            if ( i == 0 )
-                prob_prime = 0.5;
-            else
-                prob_prime = 1.0 - (1.0 / (double)power(2,i));
-        } else
-            is_prime = FALSE;
-
 int lehmann( mpz_t prime, gmp_randstate_t state )
 {
     int i;
     int isPrime = TRUE;
-    mpz_t p, res, e;
+    mpz_t res, e, a, base, mod, tmp, remainder;
 
-    p = mpz_get_ui( prime );
-    e = (p - 1) / 2;
+    /* Allocating mpz struct */
+    mpz_init(res); mpz_set_ui(res, 0);
+    mpz_init(e); mpz_set_ui(e, 0);
+    mpz_init(a); mpz_set_ui(a, 0);
+    mpz_init(base); mpz_set_ui(base, 2);
+    mpz_init(mod); mpz_set_ui(mod, 0);
+    mpz_init(remainder); mpz_set_ui(remainder, 0);
+    mpz_init(tmp); mpz_set_ui(tmp, 0);
+
+    /* Computing range of mod */
+    mpz_pow_ui(mod, base, 1025);
+    // printf("mod: "); mpz_out_str(stdout, 10, mod); printf("\n");
+
+    /* Computing e */
+    mpz_sub_ui(e, prime, 1);            /* e = prime - 1*/
+    mpz_tdiv_qr_ui(e, remainder, e, 2); /* e = e / 2 */
+    // printf("e: "); mpz_out_str(stdout, 10, e); printf("\n");
+
+    /* First randomised of a */
+    mpz_urandomm(a, state, prime);
 
     i = 0;
     while ( i < NREPEATS_LEHMANN && isPrime == TRUE ) {
-        
-        ++i;
+        mpz_powm(res, a, e, mod);           /* Compute res = a^e */
+        // printf("a^e: "); mpz_out_str(stdout, 10, res); printf("\n");
+        mpz_mod(res, res, prime);           /* Computer res mod prime */
+
+        mpz_sub_ui(tmp, prime, 1);
+        if ( mpz_cmp_ui(res, 1) == 0 || mpz_cmp(res, tmp) == 0 ) {
+            mpz_urandomm(a, state, prime);
+            ++i;
+        } else
+            isPrime = FALSE;
     }
-    printf("\n");
-
-    if ( prob_prime > 0.5 )
-        is_prime = TRUE;
-
-    return is_prime;
+    return isPrime;
 }

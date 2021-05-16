@@ -66,8 +66,8 @@ int main()
 
     for ( j = 2; j <= 101; ++j ) {
         mpz_set_ui(rop, j);
-        if ( lehmann( rop, state ) == TRUE );
-            // printf("%d\n", j);
+        if ( lehmann( rop, state ) == TRUE )
+            printf("%d\n", j);
     }
     mpz_clear(rop);
     gmp_randclear(state);
