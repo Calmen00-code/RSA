@@ -44,6 +44,13 @@ class GFG
     // Driver code 
     public static void main (String[] args)
     {
+        for ( int i = 5; i <= 500; ++i ) {
+            if ( lehmann( i, 4 ) == 1 )
+                System.out.println(i);
+        }
+    }
+}
+/*
     int n = 3; // number to be tested 
     int t = 10; // number of tries 
       
@@ -66,5 +73,4 @@ class GFG
         else
             System.out.println(n + " is Composite."); 
     }
-}
-}
+*/

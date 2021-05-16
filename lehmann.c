@@ -77,10 +77,14 @@ int lehmann( mpz_t prime )
             if ( i > 0 )
                 probPrime = 1 - (1/pow(2,i));
             ++i;
-        } else
+        } else {
             isPrime = FALSE;
+            probPrime = 0.0;
+        }
     }
     if ( probPrime > 0.5 )
         isPrime = TRUE;
+    else 
+        isPrime = FALSE;
     return isPrime;
 }
