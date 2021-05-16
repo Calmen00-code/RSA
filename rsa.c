@@ -197,7 +197,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     generateRandomPrime( q, range, state );
 
     /* FIXME */
-    mpz_set_ui(p,12); mpz_set_ui(q,22);
+    mpz_set_ui(p,3); mpz_set_ui(q,5);
     printf("p: ");
     mpz_out_str(stdout, 10, p);
     printf("\n");
