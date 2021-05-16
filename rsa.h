@@ -11,5 +11,6 @@ int getArraySize( char str[] );
 void generateRandomPrime( mpz_t randNum, mpz_t range, gmp_randstate_t state );
 void generateKey( mpz_t e, mpz_t n, mpz_t d );
 void findE( mpz_t e, mpz_t fi );
+int checkPrime ( mpz_t prime );
 
 #endif

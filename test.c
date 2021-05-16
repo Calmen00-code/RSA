@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <gmp.h>
-#include "lehmann.h"
 #include "header.h"
 #include "rsa.h"
 #include "euclidean.h"
@@ -18,32 +17,37 @@ int checkPrime(int n) {
     return 1; // Prime
 }
 */
-
+/*
 int checkPrime ( mpz_t prime ) 
 {
     mpz_t i; mpz_t m, remainder, mod; 
     int isPrime = TRUE;
+*/
 
     /* Allocation of mpz struct */
+/*
     mpz_init(i); mpz_set_ui(i, 2);
     mpz_init(m); mpz_set_ui(m, 0);
     mpz_init(remainder); mpz_set_ui(remainder, 0);
     mpz_init(mod); mpz_set_ui(mod, 0);
+*/
 
     /* m = prime / 2 */
-    mpz_tdiv_qr_ui(m, remainder, prime, 2);
-
+ //   mpz_tdiv_qr_ui(m, remainder, prime, 2);
+/*
     while ( mpz_cmp(i, m) <= 0 && isPrime == TRUE ) {
         mpz_mod( mod, prime, i );
         if ( mpz_cmp_ui( mod, 0 ) == 0 )
             isPrime = FALSE;
-        mpz_add_ui(i, i, 1); /* ++i */
-    }
-
+*/
+ //       mpz_add_ui(i, i, 1); /* ++i */
+   // }
+/*
     mpz_clear(i); mpz_clear(m);
     mpz_clear(remainder); mpz_clear(mod);
     return isPrime;
 }
+*/
 
 int main()
 {
@@ -53,7 +57,7 @@ int main()
     mpz_init(rop);
     mpz_set_ui(rop, 0);
 
-    for ( j = 2; j <= 101; ++j ) {
+    for ( j = 2; j <= 200; ++j ) {
         mpz_set_ui(rop, j);
         if ( checkPrime( rop ) == TRUE )
             printf("%d\n", j);
