@@ -22,20 +22,25 @@
 #include "lehmann.h"
 #include "header.h"
 
-int lehmann( mpz_t prime, gmp_randstate_t state )
+int lehmann( mpz_t prime )
 {
     int i;
     int isPrime = TRUE;
-    mpz_t res, e, a, base, mod, tmp, remainder;
+    mpz_t res, a, e, base, mod, tmp, remainder;
+    gmp_randstate_t state;
 
     /* Allocating mpz struct */
     mpz_init(res); mpz_set_ui(res, 0);
-    mpz_init(e); mpz_set_ui(e, 0);
     mpz_init(a); mpz_set_ui(a, 0);
+    mpz_init(e); mpz_set_ui(e, 0);
     mpz_init(base); mpz_set_ui(base, 2);
     mpz_init(mod); mpz_set_ui(mod, 0);
     mpz_init(remainder); mpz_set_ui(remainder, 0);
     mpz_init(tmp); mpz_set_ui(tmp, 0);
+
+    /* Initialising the time seed for Random */
+    gmp_randinit_default(state);
+    gmp_randseed_ui(state, time(NULL));
 
     /* Computing range of mod */
     mpz_pow_ui(mod, base, 1025);
@@ -43,23 +48,25 @@ int lehmann( mpz_t prime, gmp_randstate_t state )
     /* Computing e */
     mpz_sub_ui(e, prime, 1);            /* e = prime - 1*/
     mpz_tdiv_qr_ui(e, remainder, e, 2); /* e = e / 2 */
-    printf("e: "); mpz_out_str(stdout, 10, e); printf("\n");
+    /* printf("e: %lf\n", e); printf("\n"); */
 
     /* First randomised of a */
     mpz_urandomm(a, state, prime);
-    printf("a: "); mpz_out_str(stdout, 10, a); printf("\n");
+    mpz_add_ui(a, a, 2);
+    /* printf("a: "); mpz_out_str(stdout, 10, a); printf("\n"); */
 
     i = 0;
     while ( i < NREPEATS_LEHMANN && isPrime == TRUE ) {
         mpz_powm(res, a, e, mod);           /* Compute res = a^e */
-        printf("a^e: "); mpz_out_str(stdout, 10, res); printf("\n");
+        /* printf("a^e: "); mpz_out_str(stdout, 10, res); printf("\n"); */
         mpz_mod(res, res, prime);           /* Computer res mod prime */
-        printf("res: "); mpz_out_str(stdout, 10, res); printf("\n");
+        /* printf("res: "); mpz_out_str(stdout, 10, res); printf("\n"); */
 
         mpz_sub_ui(tmp, prime, 1);
         if ( mpz_cmp_ui(res, 1) == 0 || mpz_cmp(res, tmp) == 0 ) {
             mpz_urandomm(a, state, prime);
-            printf("a: "); mpz_out_str(stdout, 10, a); printf("\n");
+            mpz_add_ui(a, a, 2);
+            /* printf("a: "); mpz_out_str(stdout, 10, a); printf("\n"); */
             ++i;
         } else
             isPrime = FALSE;

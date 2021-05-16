@@ -55,24 +55,21 @@ int main()
 {
     int j;
     mpz_t rop;
-    gmp_randstate_t state;
 
     mpz_init(rop);
     mpz_set_ui(rop, 0);
 
-    /* Initialising the time seed for Random */
-    gmp_randinit_default(state);
-    gmp_randseed_ui(state, time(NULL));
 
-    for ( j = 2; j <= 101; ++j ) {
+    for ( j = 2; j <= 500; ++j ) {
         mpz_set_ui(rop, j);
-        if ( lehmann( rop, state ) == TRUE )
-            printf("%d\n\n", j);
+        if ( lehmann( rop ) == TRUE )
+            printf("%d\n", j);
+/*
         else
             printf("%d: Rejected\n\n", j);
+*/
     }
     mpz_clear(rop);
-    gmp_randclear(state);
     
     return 0;
 }
