@@ -5,6 +5,6 @@
 
 #define NREPEATS_LEHMANN 4
 
-int lehmann( mpz_t prime );
+int lehmann( mpz_t prime, gmp_randstate_t state );
 
 #endif

@@ -22,13 +22,12 @@
 #include "lehmann.h"
 #include "header.h"
 
-int lehmann( mpz_t prime )
+int lehmann( mpz_t prime, gmp_randstate_t state )
 {
     int i;
     double prob_prime = 0.0;
     int is_prime = TRUE;
     mpz_t powVal, base, a, r, exp, tmp, remainder, mod;
-    gmp_randstate_t state;
     
     /* Initialising mpz data structure */
     mpz_init(powVal); mpz_set_ui(powVal, 0);
@@ -40,11 +39,8 @@ int lehmann( mpz_t prime )
     mpz_init(remainder); mpz_set_ui(remainder, 0);
     mpz_init(mod); mpz_set_ui(mod, 0);
 
-    /* Initialising the time seed for Random */
-    gmp_randinit_default(state);
-
     /* Range of mod for mpz_powm */
-    mpz_pow_ui(mod, base, 1025);
+    mpz_pow_ui(mod, base, 512);
 
     /* exp = tmp / 2 */
     mpz_tdiv_qr_ui(exp, remainder, tmp, 2);
@@ -52,6 +48,7 @@ int lehmann( mpz_t prime )
     i = 0;
     while ( i < NREPEATS_LEHMANN && is_prime == TRUE ) {
         mpz_urandomm(a, state, prime);      /* Randomised a */
+        // FIXME mpz_out_str(stdout, 10, a); printf("\n");
         mpz_powm(powVal, a, exp, mod);      /* Raise a to exp */
         mpz_mod(r, powVal, prime);          /* r = powVal % prime number */
 
@@ -66,6 +63,7 @@ int lehmann( mpz_t prime )
             is_prime = FALSE;
         ++i;
     }
+    printf("\n");
 
     if ( prob_prime > 0.5 )
         is_prime = TRUE;
@@ -74,7 +72,7 @@ int lehmann( mpz_t prime )
     mpz_clear(powVal); mpz_clear(base); 
     mpz_clear(a); mpz_clear(r);
     mpz_clear(exp); mpz_clear(tmp);
-    mpz_clear(remainder); gmp_randclear(state);
+    mpz_clear(remainder);
 
     return is_prime;
 }

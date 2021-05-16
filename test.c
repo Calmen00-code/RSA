@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <gmp.h>
+#include <time.h>
 #include "lehmann.h"
 #include "header.h"
 #include "rsa.h"
@@ -54,16 +55,22 @@ int main()
 {
     int j;
     mpz_t rop;
+    gmp_randstate_t state;
 
     mpz_init(rop);
     mpz_set_ui(rop, 0);
 
-    for ( j = 1; j <= 101; ++j ) {
+    /* Initialising the time seed for Random */
+    gmp_randinit_default(state);
+    gmp_randseed_ui(state, time(NULL));
+
+    for ( j = 2; j <= 101; ++j ) {
         mpz_set_ui(rop, j);
-        if ( lehmann( rop ) == TRUE );
+        if ( lehmann( rop, state ) == TRUE );
             // printf("%d\n", j);
     }
     mpz_clear(rop);
+    gmp_randclear(state);
     
     return 0;
 }
