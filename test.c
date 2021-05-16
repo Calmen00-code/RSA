@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <gmp.h>
+#include "lehmann.h"
 #include "header.h"
 #include "rsa.h"
 #include "euclidean.h"
@@ -57,20 +58,12 @@ int main()
     mpz_init(rop);
     mpz_set_ui(rop, 0);
 
-    for ( j = 2; j <= 200; ++j ) {
+    for ( j = 1; j <= 101; ++j ) {
         mpz_set_ui(rop, j);
-        if ( checkPrime( rop ) == TRUE )
-            printf("%d\n", j);
+        if ( lehmann( rop ) == TRUE );
+            // printf("%d\n", j);
     }
     mpz_clear(rop);
-/*
-    int j;
-
-    for ( j = 2; j <= 200; ++j ) {
-        if ( checkPrime( j ) == 1 )
-            printf("%d\n", j);
-    }
-*/
     
     return 0;
 }

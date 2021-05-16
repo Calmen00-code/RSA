@@ -32,19 +32,20 @@ int lehmann( mpz_t prime )
     
     /* Initialising mpz data structure */
     mpz_init(powVal); mpz_set_ui(powVal, 0);
-    mpz_init(base); mpz_set_ui(base, 0);
+    mpz_init(base); mpz_set_ui(base, 2);
     mpz_init(a); mpz_set_ui(a, 0);
     mpz_init(r); mpz_set_ui(r, 0);
     mpz_init(exp); mpz_set_ui(exp, 0);
     mpz_init(tmp); mpz_set_ui(tmp, 0);
     mpz_init(remainder); mpz_set_ui(remainder, 0);
-    mpz_init(mod); mpz_set_ui(mod, 1025);
+    mpz_init(mod); mpz_set_ui(mod, 0);
 
     /* Initialising the time seed for Random */
     gmp_randinit_default(state);
 
-    /* tmp = prime - 1 */
-    mpz_sub_ui(tmp, prime, 1);
+    /* Range of mod for mpz_powm */
+    mpz_pow_ui(mod, base, 1025);
+
     /* exp = tmp / 2 */
     mpz_tdiv_qr_ui(exp, remainder, tmp, 2);
 

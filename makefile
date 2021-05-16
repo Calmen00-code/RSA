@@ -23,7 +23,7 @@ maths.o : maths.c maths.h header.h
 file.o : file.c file.h
 	$(CC) $(CFLAGS) -c file.c
 
-rsa.o : rsa.c rsa.h header.h maths.h euclidean.h
+rsa.o : rsa.c rsa.h header.h maths.h euclidean.h lehmann.h
 	$(CC) $(CFLAGS) $(LFLAGS) -c rsa.c
 
 euclidean.o : euclidean.c euclidean.h
@@ -32,7 +32,7 @@ euclidean.o : euclidean.c euclidean.h
 $(EXECT) : $(OBJT)
 	$(CC) $(OBJT) $(LFLAGS) $(CFLAGS) -o $(EXECT)
 
-test.o : test.c rsa.h header.h euclidean.h
+test.o : test.c rsa.h header.h euclidean.h lehmann.h
 	$(CC) $(CFLAGS) $(LFLAGS) -c test.c
 
 clean:

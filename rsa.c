@@ -8,6 +8,7 @@
 #include <string.h>
 #include <gmp.h>    /* Use to compute large integer */
 #include <time.h>
+#include "lehmann.h"
 #include "euclidean.h"
 #include "rsa.h"
 #include "maths.h"
@@ -148,7 +149,7 @@ void generateRandomPrime( mpz_t randNum, mpz_t range,
     while ( stop == FALSE ) {
         mpz_urandomm(randNum, state, range);
         /* Primality Test */
-        if ( checkPrime( randNum ) == TRUE )
+        if ( mpz_probab_prime_p( randNum, 1000 ) == 2 )
             stop = TRUE;
     }
 }
