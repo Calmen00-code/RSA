@@ -4,31 +4,70 @@
 #include "header.h"
 #include "rsa.h"
 #include "euclidean.h"
+/*
+int checkPrime(int n) {
+    int i;
+    int m = n / 2;
+    
+    for (i = 2; i <= m; i++) {
+        if (n % i == 0) {
+            return 0; // Not Prime
+        }
+    }
+
+    return 1; // Prime
+}
+*/
+
+int checkPrime ( mpz_t prime ) 
+{
+    mpz_t i; mpz_t m, remainder, mod; 
+    int isPrime = TRUE;
+
+    /* Allocation of mpz struct */
+    mpz_init(i); mpz_set_ui(i, 2);
+    mpz_init(m); mpz_set_ui(m, 0);
+    mpz_init(remainder); mpz_set_ui(remainder, 0);
+    mpz_init(mod); mpz_set_ui(mod, 0);
+
+    /* m = prime / 2 */
+    mpz_tdiv_qr_ui(m, remainder, prime, 2);
+
+    while ( mpz_cmp(i, m) <= 0 && isPrime == TRUE ) {
+        mpz_mod( mod, prime, i );
+        if ( mpz_cmp_ui( mod, 0 ) == 0 )
+            isPrime = FALSE;
+        mpz_add_ui(i, i, 1); /* ++i */
+    }
+
+    mpz_clear(i); mpz_clear(m);
+    mpz_clear(remainder); mpz_clear(mod);
+    return isPrime;
+}
 
 int main()
 {
-    mpz_t p, q, n;
-    mpz_t fi, e, d;
+    int j;
+    mpz_t rop;
 
-    mpz_init(p); mpz_set_ui(p, 263);
-    mpz_init(q); mpz_set_ui(q, 587);
-    mpz_init(n); mpz_set_ui(n, 0);
-    mpz_init(fi); mpz_set_ui(fi, 0);
-    mpz_init(e); mpz_set_ui(e, 0);
-    mpz_init(d); mpz_set_ui(d, 0);
+    mpz_init(rop);
+    mpz_set_ui(rop, 0);
 
-    generateKey( e, n, d );
-    printf("e: ");
-    mpz_out_str(stdout, 10, e);
-    printf("\n");
+    for ( j = 2; j <= 101; ++j ) {
+        mpz_set_ui(rop, j);
+        if ( checkPrime( rop ) == TRUE )
+            printf("%d\n", j);
+    }
+    mpz_clear(rop);
+/*
+    int j;
+
+    for ( j = 2; j <= 200; ++j ) {
+        if ( checkPrime( j ) == 1 )
+            printf("%d\n", j);
+    }
+*/
     
-    printf("n: ");
-    mpz_out_str(stdout, 10, n);
-    printf("\n");
-
-    printf("d: ");
-    mpz_out_str(stdout, 10, d);
-    printf("\n");
     return 0;
 }
 
