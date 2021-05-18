@@ -61,8 +61,7 @@ int main()
 
 
     for ( j = 500; j <= 1000; ++j ) {
-        mpz_set_ui(rop, j);
-        if ( lehmann( rop ) == TRUE )
+        if ( lehmann( j ) == TRUE )
             printf("%d\n", j);
 /*
         else

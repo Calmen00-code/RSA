@@ -23,7 +23,7 @@
 #include "lehmann.h"
 #include "header.h"
 
-int lehmann( mpz_t prime )
+int lehmann( unsigned long long prime )
 {
     int i;
     int isPrime = TRUE;
@@ -44,9 +44,6 @@ int lehmann( mpz_t prime )
     gmp_randinit_default(state);
     gmp_randseed_ui(state, time(NULL));
 
-    /* Computing range of mod */
-    mpz_pow_ui(mod, base, 1025);
-
     /* Computing e */
     mpz_sub_ui(e, prime, 1);            /* e = prime - 1*/
     mpz_tdiv_qr_ui(e, remainder, e, 2); /* e = e / 2 */
@@ -59,12 +56,13 @@ int lehmann( mpz_t prime )
 
     i = 0;
     while ( i < NREPEATS_LEHMANN && isPrime == TRUE ) {
-        mpz_powm(res, a, e, mod);           /* Compute res = a^e */
+        mpz_pow_ui(res, a, prime);           /* Compute res = a^e */
         /* printf("a^e: "); mpz_out_str(stdout, 10, res); printf("\n"); */
         mpz_mod(res, res, prime);           /* Computer res mod prime */
         /* printf("res: "); mpz_out_str(stdout, 10, res); printf("\n"); */
 
-        mpz_sub_ui(tmp, prime, 1);
+        mpz_sub_ui(tmp, prime, 1);  /* To compare for r == p - 1 */
+
         if ( mpz_cmp_ui(res, 1) == 0 ) {
             mpz_urandomm(a, state, prime);
             if ( i == 0 )
