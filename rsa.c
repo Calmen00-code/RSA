@@ -185,8 +185,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(mulInvTwo); mpz_set_ui(mulInvTwo, 0);
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
-    /* Taking key of bits between 70 */
-    mpz_pow_ui(range, base, 70);
+    /* Taking key of bits between 24 */
+    mpz_pow_ui(range, base, 12);
 
     /* Initialising random seed */
     gmp_randinit_mt(state);
@@ -196,10 +196,9 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
 /*
     generateRandomPrime( p, range, state );
     generateRandomPrime( q, range, state );
+*/
     mpz_nextprime(p, range);
     mpz_nextprime(q, p);
-*/
-
 
     /* FIXME */
     /* mpz_set_ui(p, 118059162163); mpz_set_ui(q, 118059162391); */
@@ -208,7 +207,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* mpz_set_ui(p, 9967); mpz_set_ui(q, 9973); */
 
     /* FIXME: Works for test.txt (Slow) */
-    mpz_set_ui(p, 500729); mpz_set_ui(q, 500057);
+    /* mpz_set_ui(p, 50729); mpz_set_ui(q, 50057); */
 
     /* FIXME: Works for RSA-test.txt */
     /* mpz_set_ui(p, 1009); mpz_set_ui(q, 1021); */
