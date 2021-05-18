@@ -193,12 +193,12 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     gmp_randseed_ui(state, time(NULL));
 
     /* Generates prime for p and q */
-/*
     generateRandomPrime( p, range, state );
     generateRandomPrime( q, range, state );
-*/
+/*
     mpz_nextprime(p, range);
     mpz_nextprime(q, p);
+*/
 
     /* FIXME */
     /* mpz_set_ui(p, 118059162163); mpz_set_ui(q, 118059162391); */
