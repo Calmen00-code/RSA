@@ -5,6 +5,6 @@
 
 #define NREPEATS_LEHMANN 4
 
-int lehmann( unsigned long long prime );
+int lehmann( mpz_t prime );
 
 #endif
