@@ -62,8 +62,8 @@ void fastExp( mpz_t res, mpz_t x, mpz_t h, mpz_t n )
     mpz_init(y); mpz_set_ui(y, 0);
 
     /* Binary is at most the value of h */
-    bin = calloc(sizeof(int), 10000);
-    setArray( bin, 10000, -1 );
+    bin = calloc(sizeof(int), 1000);
+    setArray( bin, 1000, -1 );
 
     size = decToBin( bin, mpz_get_ui(h) );
     mpz_set(y, x);

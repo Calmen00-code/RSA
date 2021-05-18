@@ -203,8 +203,15 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
 
     /* FIXME */
     /* mpz_set_ui(p, 118059162163); mpz_set_ui(q, 118059162391); */
+
+    /* FIXME: Works for test.txt (Fast) */
     /* mpz_set_ui(p, 9967); mpz_set_ui(q, 9973); */
-    mpz_set_ui(p, 50033); mpz_set_ui(q, 50047);
+
+    /* FIXME: Works for test.txt (Slow) */
+    mpz_set_ui(p, 500729); mpz_set_ui(q, 500057);
+
+    /* FIXME: Works for RSA-test.txt */
+    /* mpz_set_ui(p, 1009); mpz_set_ui(q, 1021); */
 
     printf("p: ");
     mpz_out_str(stdout, 10, p);

@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
         printf("\n\n");
         Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
         Decryption( ciphertext, plaintext, d, n );
-        printf("ciphertext: %s\n", ciphertext);
+        printf("ciphertext: %s\n\n\n", ciphertext);
         printf("plaintext: %s\n", plaintext);
 
 
@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
             } else
                 ++j;
         }
-        printf("%s\n", convert);
+        /* printf("%s\n", convert); */
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
