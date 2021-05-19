@@ -120,7 +120,8 @@ int main(int argc, char* argv[])
         printf("ciphertext: %s\n\n\n", ciphertext);
         printf("plaintext: %s\n\n", plaintext);
 
-        char charStr[STR], convert[STR], cVal;
+        char charStr[STR] = "", convert[STR] = "";
+        char cVal;
         j = 1;
 
         for ( i = 0; plaintext[i] != '\0'; ++i ) {
@@ -134,7 +135,7 @@ int main(int argc, char* argv[])
                     }
                 } else {
                     cVal = toChar( plaintext, i, 2 );
-                    i += 2;
+                    i += 2;     /* Update the index after computation */
                 }
                 sprintf( charStr, "%c", cVal );
                 strcat( convert, charStr );
@@ -142,7 +143,7 @@ int main(int argc, char* argv[])
                 ++j;
         }
         printf("\n");
-        /* printf("%s\n", convert); */
+        printf("%s\n", convert);
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
