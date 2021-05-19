@@ -51,9 +51,7 @@ char toChar( char plaintext[], int end, int nSteps )
         tmp[i] = plaintext[start];
         ++start;
     }
-    /*printf("tmp: %s\n", tmp);*/
     iVal = atoi(tmp);
-    printf("%d\n", iVal);
     cVal = (char)iVal;
     return cVal;
 }
@@ -116,7 +114,6 @@ int main(int argc, char* argv[])
         printf("\n\n");
         Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
 
-
         int arrSize = getArraySize( asciiMsg );
         plaintext = calloc(sizeof(char*), arrSize);
         for ( i = 0; i < arrSize; ++i )
@@ -124,10 +121,6 @@ int main(int argc, char* argv[])
         Decryption( ciphertext, plaintext, d, n );
         printf("ciphertext: %s\n\n\n", ciphertext);
         /* printf("plaintext: %s\n\n", plaintext); */
-
-        for ( i = 0; i < arrSize; ++i )
-            printf("%s ", plaintext[i]);
-
 
         char tmpStr[STR] = "";
         for ( i = 0; i < arrSize; ++i ) {

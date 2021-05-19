@@ -194,22 +194,6 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Generates prime for p and q */
     generateRandomPrime( p, range, state );
     generateRandomPrime( q, range, state );
-/*
-    mpz_nextprime(p, range);
-    mpz_nextprime(q, p);
-*/
-
-    /* FIXME */
-    /* mpz_set_ui(p, 118059162163); mpz_set_ui(q, 118059162391); */
-
-    /* FIXME: Works for test.txt (Fast) */
-    /* mpz_set_ui(p, 9967); mpz_set_ui(q, 9973); */
-
-    /* FIXME: Works for test.txt (Slow) */
-    /* mpz_set_ui(p, 50729); mpz_set_ui(q, 50057); */
-
-    /* FIXME: Works for RSA-test.txt */
-    /* mpz_set_ui(p, 1009); mpz_set_ui(q, 1021); */
 
     printf("p: ");
     mpz_out_str(stdout, 10, p);
@@ -217,12 +201,6 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     printf("q: ");
     mpz_out_str(stdout, 10, q);
     printf("\n");
-
-    /* FIXME */ 
-/*
-    mpz_set_ui(p, 263);
-    mpz_set_ui(q, 587); 
-*/
 
     /* Computing n */
     mpz_mul(n, p, q);
@@ -237,17 +215,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     /* Finding e */
     findE(e, fi);
 
-    /* FIXME */
-    /* mpz_set_ui(e, 683); */
-
     /* Finding d */
     mpz_gcdext( gcdRes, invOne, invTwo, e, fi );
-    printf("invOne: ");
-    mpz_out_str(stdout, 10, invOne);
-    printf("\n");
-    printf("invTwo: ");
-    mpz_out_str(stdout, 10, invTwo);
-    printf("\n");
 
     if ( mpz_cmp_ui( invOne, 0 ) > 0 ) {
         mpz_mul(mulInvOne, invOne, e);
@@ -291,10 +260,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
             }
         }
     }
-
-    /* FIXME */
-    /* mpz_set_ui(d, 81599); */
-    
+ 
     /* Deallocating the structure */
     mpz_clear(range); 
     mpz_clear(base); mpz_clear(p);
