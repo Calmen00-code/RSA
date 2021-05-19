@@ -23,11 +23,12 @@ void Encryption( char asciiMsg[], char ciphertext[],
     int i;
     int *asciiArr, arrSize;
     mpz_t c, x;
-    char cipher[STR];
+    char *cipher;
 
-    /* Initialising mpz structure */
+    /* Initialising mpz structure and cipher */
     mpz_init(c); mpz_set_ui(c, 0);
     mpz_init(x); mpz_set_ui(x, 0);
+    cipher = calloc(sizeof(char*), STR);
 
     /* Allocating asciiArr */
     arrSize = getArraySize( asciiMsg );
@@ -45,6 +46,7 @@ void Encryption( char asciiMsg[], char ciphertext[],
         strcat( ciphertext, cipher );
         strcat( ciphertext, " " );
     }
+    free(cipher); cipher = NULL;
     free(asciiArr); asciiArr = NULL;
     /* Deallocating mpz */
     mpz_clear(c); mpz_clear(x);
@@ -288,6 +290,8 @@ void findE( mpz_t e, mpz_t fi )
             stop = TRUE;
         mpz_add_ui(i, i, 1);
     }
+    mpz_clear(gcdRes);
+    mpz_clear(i);
 }
 
 int checkPrime ( mpz_t prime ) 

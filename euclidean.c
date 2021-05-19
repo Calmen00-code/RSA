@@ -1,3 +1,8 @@
+/**
+ * Program: euclidean.c
+ * Purpose: Find the inverse of a gcd which is d
+ */
+
 #include <gmp.h>
 #include "euclidean.h"
 

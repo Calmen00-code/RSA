@@ -141,7 +141,18 @@ int main(int argc, char* argv[])
         writeToFile( convert, "plaintext.txt" );
 
         /* Free the dynamic allocation created from read */
+        for ( i = 0; i < size; ++i ) {
+            free(content[i]); 
+            content[i] = NULL;
+        }
+        for ( i = 0; i < arrSize; ++i ) {
+            free(plaintext[i]); 
+            plaintext[i] = NULL;
+        }
+        free(plaintext); plaintext = NULL;
         free(content); content = NULL;
+        free(cipherArr); cipherArr = NULL;
+
         /* Deallocating mpz */
         mpz_clear(n); mpz_clear(e); mpz_clear(d);
     }

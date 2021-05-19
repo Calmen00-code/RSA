@@ -10,6 +10,9 @@
 #include "maths.h"
 #include "header.h"
 
+/**
+ * Raise num to the power of exp
+ */
 int power( int num, int exp )
 {
     int i;
@@ -82,6 +85,9 @@ void fastExp( mpz_t res, mpz_t x, mpz_t h, mpz_t n )
     free(bin); bin = NULL;
 }
 
+/**
+ * Set all the elements in arr to val
+ */
 void setArray( int *arr, int size, int val )
 {
     int i;

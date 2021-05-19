@@ -22,6 +22,10 @@
 #include "lehmann.h"
 #include "header.h"
 
+/**
+ * Check if mpz_t prime was indeed a prime number
+ * Return TRUE if yes, otherwise it returns FALSE
+ */
 int lehmann( mpz_t prime )
 {
     int i;
@@ -67,6 +71,7 @@ int lehmann( mpz_t prime )
     mpz_clear(a); mpz_clear(r);
     mpz_clear(exp); mpz_clear(tmp);
     mpz_clear(remainder); gmp_randclear(state);
+    mpz_clear(mod);
 
     return is_prime;
 }
