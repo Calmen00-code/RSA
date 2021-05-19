@@ -3,7 +3,6 @@
  * Purpose: Handling all function related to the RSA
  */
 
-#include <stdio.h> /* FIXME: Remove after testing */
 #include <stdlib.h>
 #include <string.h>
 #include <gmp.h>    /* Use to compute large integer */
@@ -195,22 +194,12 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     generateRandomPrime( p, range, state );
     generateRandomPrime( q, range, state );
 
-    printf("p: ");
-    mpz_out_str(stdout, 10, p);
-    printf("\n");
-    printf("q: ");
-    mpz_out_str(stdout, 10, q);
-    printf("\n");
-
     /* Computing n */
     mpz_mul(n, p, q);
 
     /* Computing fi */
     mpz_sub_ui(fiP, p, 1); mpz_sub_ui(fiQ, q, 1);
     mpz_mul(fi, fiP, fiQ);
-    printf("fi: ");
-    mpz_out_str(stdout, 10, fi);
-    printf("\n");
 
     /* Finding e */
     findE(e, fi);
