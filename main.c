@@ -46,8 +46,8 @@ int main(int argc, char* argv[])
     int i, j, k;
     int *cipherArr, arrSize, size;
     char **content;
-    char asciiStr[STR] = "", asciiMsg[STR] = "", hexacipher[STR];
-    char ciphertext[STR], **plaintext;
+    char asciiStr[STR] = "", asciiMsg[STR] = "", hexacipher[STR] = "";
+    char ciphertext[STR] = "", **plaintext;
     int ascii;
     mpz_t n, e, d;
 
