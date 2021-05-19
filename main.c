@@ -126,9 +126,12 @@ int main(int argc, char* argv[])
         for ( i = 0; plaintext[i] != '\0'; ++i ) {
             if ( j == 3 ) {
                 if ( plaintext[i] == '0' ) {
-                    --i;
-                    cVal = toChar( plaintext, i, 1 );
-                    j = 1;
+                    if ( plaintext[i+1] != ' ' && 
+                         plaintext[i+1] != '\0' ) {
+                        --i;
+                        cVal = toChar( plaintext, i, 1 );
+                        j = 1;
+                    }
                 } else {
                     cVal = toChar( plaintext, i, 2 );
                     i += 2;
