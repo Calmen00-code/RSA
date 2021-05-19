@@ -102,8 +102,7 @@ int main(int argc, char* argv[])
         cipherArr = calloc(sizeof(int), arrSize);
         getIntArray( ciphertext, cipherArr );
         decToHex( cipherArr, arrSize, hexacipher );
-        printf("ciphertext: %s\n", ciphertext);
-        printf("hexacipher: %s\n", hexacipher);
+        writeToFile( hexacipher, "ciphertext.txt" );
 
         /***** DECRYPTION *****/
         plaintext = calloc(sizeof(char*), arrSize);
