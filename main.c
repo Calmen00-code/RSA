@@ -11,6 +11,7 @@
 #include "lehmann.h"
 #include "file.h"
 #include "rsa.h"
+#include "conversion.h"
 
 /**
  * Check if the current character of 
@@ -38,22 +39,6 @@ void asciiWrite( char *asciiStr, int ascii )
         sprintf( asciiStr, "0%d", ascii );
     else               /* Just parsed as normal */
         sprintf( asciiStr, "%d", ascii );
-}
-
-char toChar( char plaintext[], int end, int nSteps )
-{
-    char tmp[STR] = "";
-    char cVal;
-    int i, iVal, start;
-
-    start = end - nSteps;
-    for ( i = 0; i <= nSteps; ++i ) {
-        tmp[i] = plaintext[start];
-        ++start;
-    }
-    iVal = atoi(tmp);
-    cVal = (char)iVal;
-    return cVal;
 }
  
 int main(int argc, char* argv[])
