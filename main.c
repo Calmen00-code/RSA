@@ -43,15 +43,18 @@ void asciiWrite( char *asciiStr, int ascii )
 char toChar( char plaintext[], int end, int nSteps )
 {
     char tmp[STR], cVal;
-    int i, j, iVal, start;
+    int i, iVal, start;
 
     start = end - nSteps;
-    j = 0;
-    for ( i = start; i <= nSteps; ++i ) {
-        tmp[j] = plaintext[i];
-        ++j;
+    for ( i = 0; i <= nSteps; ++i ) {
+        printf("%c", plaintext[start]);
+        tmp[i] = plaintext[start];
+        ++start;
     }
+    printf("\n");
+    /*printf("tmp: %s\n", tmp);*/
     iVal = atoi(tmp);
+    /* printf("%d ", iVal); */
     cVal = (char)iVal;
     return cVal;
 }
@@ -115,24 +118,26 @@ int main(int argc, char* argv[])
         Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
         Decryption( ciphertext, plaintext, d, n );
         printf("ciphertext: %s\n\n\n", ciphertext);
-        printf("plaintext: %s\n", plaintext);
-
+        printf("plaintext: %s\n\n", plaintext);
 
         char charStr[STR], convert[STR], cVal;
         j = 1;
+
         for ( i = 0; plaintext[i] != '\0'; ++i ) {
             if ( j == 3 ) {
                 if ( plaintext[i] == '0' ) {
                     --i;
                     cVal = toChar( plaintext, i, 1 );
                     j = 1;
-                } else
+                } else {
                     cVal = toChar( plaintext, i, 2 );
+                }
                 sprintf( charStr, "%c", cVal );
                 strcat( convert, charStr );
             } else
                 ++j;
         }
+        printf("\n");
         /* printf("%s\n", convert); */
 
         /* Free the dynamic allocation created from read */
