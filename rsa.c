@@ -139,11 +139,12 @@ void generateRandomPrime( mpz_t randNum, mpz_t range,
          * Ensures m < n by limiting that the p 
          * and q must be at least > 1000.
          *
-         * Therefore, when p and q is both 1000,
-         * we can still get numbers with 7 significance
-         * Which is greater than 6 significance of the m
+         * Therefore, when p and q is both 555,
+         * we can still get numbers with 6 significance
+         * but still greater than 6 significance of the m
+         * which starts from 2 at maximum (from ascii table)
          */
-        mpz_add_ui(randNum, randNum, 1000);
+        mpz_add_ui(randNum, randNum, 555);
         /* Primality Test */
         if ( lehmann( randNum ) == TRUE )
             stop = TRUE;
