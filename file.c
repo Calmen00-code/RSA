@@ -18,21 +18,21 @@ char** read( char filename[] )
     char **content = NULL;
     int numLine = 0;
     int i;
-
-    numLine = readFileSize( filename );
-    content = calloc(numLine, sizeof(char*));
-    for ( i = 0; i < numLine; ++i )
-        content[i] = calloc(STR, sizeof(char));
+    char str[STR] = "";
 
     readPtr = fopen( filename, "r" );
     if ( readPtr == NULL ) {
         perror("Error while reading file");
         exit(1);
     } else {        
-        /* Reading stops when the pointer reaches the end of file */
-        i = 0;
-        while ( fscanf( readPtr, "%[^\n]\n", content[i] ) != EOF )
-           ++i; 
+        numLine = readFileSize( filename );
+        content = calloc(numLine, sizeof(char*));
+
+        for ( i = 0; i < numLine; ++i ) {
+            content[i] = calloc(STR, sizeof(char));
+            fgets(str, STR, readPtr);
+            strcpy(content[i], str);
+        }
         fclose(readPtr); readPtr = NULL;
     }
     return content;
