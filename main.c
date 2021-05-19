@@ -137,8 +137,8 @@ int main(int argc, char* argv[])
                     ++count;
             }
         }
-        printf("Decryption Result: plain.txt\n");
-        writeToFile( "plain.txt", convert );
+        printf("Decryption Result: plaintext.txt\n");
+        writeToFile( convert, "plaintext.txt" );
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;

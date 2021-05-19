@@ -73,7 +73,6 @@ void writeToFile( char text[], char filename[] )
         perror("Error while writing to file");
     } else {
         for ( i = 0; text[i] != '\0'; ++i ) {
-            printf("%c", text[i]);
             fprintf( writePtr, "%c", text[i] );
         }
         fclose(writePtr); writePtr = NULL;

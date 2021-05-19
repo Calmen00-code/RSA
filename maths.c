@@ -88,14 +88,3 @@ void setArray( int *arr, int size, int val )
     for ( i = 0; i < size; ++i )
         arr[i] = val;
 }
-
-/* FIXME: Remove after testing */
-void displayArr( int *arr, int size )
-{
-    int i;
-    for ( i = 0; i < size; ++i ) {
-        if ( arr[i] != -1 )
-            printf("%d", arr[i]);
-    }
-    printf("\n");
-}
