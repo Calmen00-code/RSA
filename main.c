@@ -44,7 +44,7 @@ void asciiWrite( char *asciiStr, int ascii )
 int main(int argc, char* argv[])
 {
     int i, j, k;
-    int **cipherArr, arrSize, size;
+    int *cipherArr, arrSize, size;
     char **content;
     char asciiStr[STR], asciiMsg[STR], hexacipher[STR];
     char ciphertext[STR], **plaintext;
@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
         Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
         arrSize = getArraySize( asciiMsg );
         cipherArr = calloc(sizeof(int), arrSize);
-        decToHex( cipherArr, hexacipher );
+        decToHex( cipherArr, arrSize, hexacipher );
 
         plaintext = calloc(sizeof(char*), arrSize);
         for ( i = 0; i < arrSize; ++i )

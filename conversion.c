@@ -31,14 +31,13 @@ char toChar( char plaintext[], int end, int nSteps )
 /**
  * Convertion decimal in string into hexa in text
  */
-void decToHex( char dectext[], char hexatext[] )
+void decToHex( int *cipherArr, int arrSize, char hexatext[] )
 {
-    int i, dec;
+    int i;
     char hex[STR] = "";
 
-    for ( i = 0; dectext[i] != '\0'; ++i ) {
-        dec = atoi( dectext[i] );
-        sprintf( hex, "%X", dec );
+    for ( i = 0; i < arrSize; ++i ) {
+        sprintf( hex, "%X", cipherArr[i] );
         strcpy( hexatext, hex );
     }
 }
