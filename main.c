@@ -127,38 +127,36 @@ int main(int argc, char* argv[])
 
         for ( i = 0; i < arrSize; ++i )
             printf("%s ", plaintext[i]);
-/*
+
+
+        char tmpStr[STR] = "";
+        for ( i = 0; i < arrSize; ++i ) {
+            for ( j = 0; plaintext[i][j] != '\0'; ++j ) {
+                /* Do padding if length of ascii string is not
+                   equivalent to 2 pairs of character */
+                if ( strlen(plaintext[i]) < 6 ) {
+                    strcpy( tmpStr, plaintext[i] );
+                    sprintf( plaintext[i], "0%s", tmpStr );
+                }
+            }
+        }
+
         char charStr[STR] = "", convert[STR] = "";
         char cVal;
-        j = 1;
-
-        for ( i = 0; plaintext[i] != '\0'; ++i ) {
-            if ( j == 3 ) {
-                if ( plaintext[i] == '0' ) {
-                    printf("Case 1: ");
-                    if ( plaintext[i+1] != ' ' && 
-                         plaintext[i+1] != '\0' ) {
-                        --i;
-                        cVal = toChar( plaintext, i, 1 );
-                        j = 1;
-                    } else if ( plaintext[i+1] != '\0' && plaintext[i+1] != '0' ) {
-                        cVal = toChar( plaintext, i, 2 );
-                        i += 2;*/     /* Update the index after computation */
-/*
-                    } 
-                } else {
-                    printf("Case 2: ");
-                    cVal = toChar( plaintext, i, 2 );
-                    i += 2; */    /* Update the index after computation */
-/*
-                }
-                sprintf( charStr, "%c", cVal );
-                strcat( convert, charStr );
-            } else
-                ++j;
+        int count = 1;
+        for ( i = 0; i < arrSize; ++i ) {
+            for ( j = 0; plaintext[i][j] != '\0'; ++j ) {
+                if ( count == 3 ) {
+                    cVal = toChar( plaintext[i], j, 2 );
+                    sprintf( charStr, "%c", cVal );
+                    strcat( convert, charStr );
+                    count = 1;
+                } else
+                    ++count;
+            }
         }
         printf("\n");
-        printf("%s\n", convert);*/
+        printf("%s\n", convert);
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
