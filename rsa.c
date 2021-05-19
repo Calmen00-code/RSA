@@ -54,7 +54,7 @@ void Encryption( char asciiMsg[], char ciphertext[],
 /**
  * Decrypt ciphtertext back to plaintext using d as private key
  */
-void Decryption( char ciphertext[], char plaintext[], 
+void Decryption( char ciphertext[], char **plaintext,
                  mpz_t d, mpz_t n )
 {
     int i;
@@ -66,7 +66,7 @@ void Decryption( char ciphertext[], char plaintext[],
     mpz_init(c); mpz_set_ui(c, 0);
     mpz_init(m); mpz_set_ui(m, 0);
 
-    /* Allocating cipherArr */
+    /* Allocating cipherArr and plaintext */
     arrSize = getArraySize( ciphertext );
     cipherArr = calloc(sizeof(int), arrSize);
 
@@ -78,7 +78,7 @@ void Decryption( char ciphertext[], char plaintext[],
         mpz_set_ui(c, cipherArr[i]);
         fastExp( m, c, d, n );
         mpz_get_str( plain, 10, m );
-        strcat( plaintext, plain );
+        strcpy( plaintext[i], plain );
     }
     free(cipherArr); cipherArr = NULL;
     /* Deallocating mpz */

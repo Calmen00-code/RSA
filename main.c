@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     int size;
     char **content;
     char asciiStr[STR], asciiMsg[STR];
-    char ciphertext[STR], plaintext[STR];/* , plain[STR]; */
+    char ciphertext[STR], **plaintext;/* , plain[STR]; */
     int ascii;
     mpz_t n, e, d;
 
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
         for ( i = 0; i < size; ++i ) {
             for ( j = 0; content[i][j] != '\0'; ++j ) {
                 /* No padding required */
-                if ( hasPair( content[i], j ) == TRUE ) {                    
+                if ( hasPair( content[i], j ) == TRUE ) {
                     /* Iteration fixed at 2 times (2 ASCII chars is a pair) */
                     for ( k = 0; k < CHAR_GAP; ++k ) {
                         ascii = (int)content[i][j];
@@ -115,10 +115,19 @@ int main(int argc, char* argv[])
         mpz_out_str(stdout, 10, d);
         printf("\n\n");
         Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
+
+
+        int arrSize = getArraySize( asciiMsg );
+        plaintext = calloc(sizeof(char*), arrSize);
+        for ( i = 0; i < arrSize; ++i )
+            plaintext[i] = calloc(sizeof(char), STR);
         Decryption( ciphertext, plaintext, d, n );
         printf("ciphertext: %s\n\n\n", ciphertext);
-        printf("plaintext: %s\n\n", plaintext);
+        /* printf("plaintext: %s\n\n", plaintext); */
 
+        for ( i = 0; i < arrSize; ++i )
+            printf("%s ", plaintext[i]);
+/*
         char charStr[STR] = "", convert[STR] = "";
         char cVal;
         j = 1;
@@ -132,11 +141,16 @@ int main(int argc, char* argv[])
                         --i;
                         cVal = toChar( plaintext, i, 1 );
                         j = 1;
-                    }
+                    } else if ( plaintext[i+1] != '\0' && plaintext[i+1] != '0' ) {
+                        cVal = toChar( plaintext, i, 2 );
+                        i += 2;*/     /* Update the index after computation */
+/*
+                    } 
                 } else {
                     printf("Case 2: ");
                     cVal = toChar( plaintext, i, 2 );
-                    i += 2;     /* Update the index after computation */
+                    i += 2; */    /* Update the index after computation */
+/*
                 }
                 sprintf( charStr, "%c", cVal );
                 strcat( convert, charStr );
@@ -144,7 +158,7 @@ int main(int argc, char* argv[])
                 ++j;
         }
         printf("\n");
-        printf("%s\n", convert);
+        printf("%s\n", convert);*/
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
