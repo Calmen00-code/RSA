@@ -135,6 +135,15 @@ void generateRandomPrime( mpz_t randNum, mpz_t range,
     /* Iterate until prime is acquired */
     while ( stop == FALSE ) {
         mpz_urandomm(randNum, state, range);
+        /**
+         * Ensures m < n by limiting that the p 
+         * and q must be at least > 1000.
+         *
+         * Therefore, when p and q is both 1000,
+         * we can still get numbers with 7 significance
+         * Which is greater than 6 significance of the m
+         */
+        mpz_add_ui(randNum, randNum, 1000);
         /* Primality Test */
         if ( lehmann( randNum ) == TRUE )
             stop = TRUE;
@@ -172,8 +181,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(mulInvTwo); mpz_set_ui(mulInvTwo, 0);
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
-    /* Taking key of bits between 16 */
-    mpz_pow_ui(range, base, 16);
+    /* Taking key of bits between 12 */
+    mpz_pow_ui(range, base, 12);
 
     /* Initialising random seed */
     gmp_randinit_mt(state);
