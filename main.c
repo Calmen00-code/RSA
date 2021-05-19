@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     int i, j, k;
     int *cipherArr, arrSize, size;
     char **content;
-    char asciiStr[STR], asciiMsg[STR], hexacipher[STR];
+    char asciiStr[STR] = "", asciiMsg[STR] = "", hexacipher[STR];
     char ciphertext[STR], **plaintext;
     int ascii;
     mpz_t n, e, d;
@@ -137,12 +137,9 @@ int main(int argc, char* argv[])
                     ++count;
             }
         }
-        printf("\n");
+        printf("Conversion\n");
         printf("%s\n", convert);
 
-
-        for ( i = 0; i < size; ++i )
-            printf("%s", content[i]);
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
         /* Deallocating mpz */

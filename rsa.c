@@ -184,7 +184,7 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
     /* Taking key of bits between 24 */
-    mpz_pow_ui(range, base, 12);
+    mpz_pow_ui(range, base, 24);
 
     /* Initialising random seed */
     gmp_randinit_mt(state);
