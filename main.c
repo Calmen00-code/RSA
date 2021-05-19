@@ -42,19 +42,19 @@ void asciiWrite( char *asciiStr, int ascii )
 
 char toChar( char plaintext[], int end, int nSteps )
 {
-    char tmp[STR], cVal;
+    char tmp[STR] = "";
+    char cVal;
     int i, iVal, start;
 
     start = end - nSteps;
     for ( i = 0; i <= nSteps; ++i ) {
-        printf("%c", plaintext[start]);
         tmp[i] = plaintext[start];
         ++start;
     }
     printf("\n");
     /*printf("tmp: %s\n", tmp);*/
     iVal = atoi(tmp);
-    /* printf("%d ", iVal); */
+    printf("%d ", iVal);
     cVal = (char)iVal;
     return cVal;
 }
