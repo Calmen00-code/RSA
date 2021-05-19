@@ -51,10 +51,9 @@ char toChar( char plaintext[], int end, int nSteps )
         tmp[i] = plaintext[start];
         ++start;
     }
-    printf("\n");
     /*printf("tmp: %s\n", tmp);*/
     iVal = atoi(tmp);
-    printf("%d ", iVal);
+    printf("%d\n", iVal);
     cVal = (char)iVal;
     return cVal;
 }
@@ -127,6 +126,7 @@ int main(int argc, char* argv[])
         for ( i = 0; plaintext[i] != '\0'; ++i ) {
             if ( j == 3 ) {
                 if ( plaintext[i] == '0' ) {
+                    printf("Case 1: ");
                     if ( plaintext[i+1] != ' ' && 
                          plaintext[i+1] != '\0' ) {
                         --i;
@@ -134,6 +134,7 @@ int main(int argc, char* argv[])
                         j = 1;
                     }
                 } else {
+                    printf("Case 2: ");
                     cVal = toChar( plaintext, i, 2 );
                     i += 2;     /* Update the index after computation */
                 }
