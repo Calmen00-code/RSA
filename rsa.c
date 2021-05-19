@@ -79,7 +79,6 @@ void Decryption( char ciphertext[], char plaintext[],
         fastExp( m, c, d, n );
         mpz_get_str( plain, 10, m );
         strcat( plaintext, plain );
-        strcat( plaintext, " " );
     }
     free(cipherArr); cipherArr = NULL;
     /* Deallocating mpz */
