@@ -121,17 +121,6 @@ int getArraySize( char str[] )
     return size;
 }
 
-/* FIXME
-void randomGenerator( mpz_t result, mpz_t range, 
-                      gmp_randstate_t state )
-{
-*/
-    /* Generating random number within range */ 
-/*
-    mpz_add(result, result, lower);
-}
-*/
-
 /**
  * Used by generateKey to get p and q
  *
@@ -183,8 +172,8 @@ void generateKey( mpz_t e, mpz_t n, mpz_t d )
     mpz_init(mulInvTwo); mpz_set_ui(mulInvTwo, 0);
     mpz_init(gcdRes); mpz_set_ui(gcdRes, 0);
 
-    /* Taking key of bits between 24 */
-    mpz_pow_ui(range, base, 24);
+    /* Taking key of bits between 16 */
+    mpz_pow_ui(range, base, 16);
 
     /* Initialising random seed */
     gmp_randinit_mt(state);
