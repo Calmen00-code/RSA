@@ -38,7 +38,7 @@ void decToHex( int *cipherArr, int arrSize, char hexatext[] )
 
     for ( i = 0; i < arrSize; ++i ) {
         sprintf( hex, "%X", cipherArr[i] );
-        printf("%s\n", hex);
         strcpy( hexatext, hex );
+        printf("%s\n", hex);
     }
 }
