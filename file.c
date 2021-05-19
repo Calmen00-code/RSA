@@ -59,3 +59,20 @@ int readFileSize( char filename[] )
     }
     return line;
 }
+
+/**
+ * Write the text outcome into the file
+ */
+void writeToFile( char text[], char filename[] )
+{
+    FILE *writePtr = NULL;
+
+    writePtr = fopen(filename, "r");
+    if ( writePtr == NULL ) {
+        perror("Error while writing to file");
+        exit(1);
+    } else {
+        fprintf( writePtr, "%s", text);
+        fclose(writePtr); writePtr = NULL;
+    }
+}
