@@ -131,6 +131,7 @@ int main(int argc, char* argv[])
                     j = 1;
                 } else {
                     cVal = toChar( plaintext, i, 2 );
+                    i += 2;
                 }
                 sprintf( charStr, "%c", cVal );
                 strcat( convert, charStr );
