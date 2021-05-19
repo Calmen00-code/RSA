@@ -158,6 +158,9 @@ int main(int argc, char* argv[])
         printf("\n");
         printf("%s\n", convert);
 
+
+        for ( i = 0; i < size; ++i )
+            printf("%s", content[i]);
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;
         /* Deallocating mpz */
