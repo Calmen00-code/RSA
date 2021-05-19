@@ -95,11 +95,16 @@ int main(int argc, char* argv[])
         printf("d: ");
         mpz_out_str(stdout, 10, d);
         printf("\n\n");
-        Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
-        arrSize = getArraySize( asciiMsg );
-        cipherArr = calloc(sizeof(int), arrSize);
-        decToHex( cipherArr, arrSize, hexacipher );
 
+        /**** ENCRYPTION ****/
+        Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
+        arrSize = getArraySize( ciphertext );
+        cipherArr = calloc(sizeof(int), arrSize);
+        getIntArray( ciphertext, cipherArr );
+        decToHex( cipherArr, arrSize, hexacipher );
+        printf("ciphertext: %s\n", hexacipher);
+
+        /***** DECRYPTION *****/
         plaintext = calloc(sizeof(char*), arrSize);
         for ( i = 0; i < arrSize; ++i )
             plaintext[i] = calloc(sizeof(char), STR);
