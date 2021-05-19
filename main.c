@@ -44,10 +44,10 @@ void asciiWrite( char *asciiStr, int ascii )
 int main(int argc, char* argv[])
 {
     int i, j, k;
-    int size;
+    int **cipherArr, arrSize, size;
     char **content;
-    char asciiStr[STR], asciiMsg[STR];
-    char ciphertext[STR], **plaintext;/* , plain[STR]; */
+    char asciiStr[STR], asciiMsg[STR], hexacipher[STR];
+    char ciphertext[STR], **plaintext;
     int ascii;
     mpz_t n, e, d;
 
@@ -86,8 +86,6 @@ int main(int argc, char* argv[])
             }
         }
         generateKey( e, n, d );
-        printf("ascii message: %s\n", asciiMsg);
-        /* FIXME */
         printf("e: ");
         mpz_out_str(stdout, 10, e);
         printf("\n");
@@ -98,14 +96,14 @@ int main(int argc, char* argv[])
         mpz_out_str(stdout, 10, d);
         printf("\n\n");
         Encryption( asciiMsg, ciphertext, n, e );    /* Public Key = n, e */
+        arrSize = getArraySize( asciiMsg );
+        cipherArr = calloc(sizeof(int), arrSize);
+        decToHex( cipherArr, hexacipher );
 
-        int arrSize = getArraySize( asciiMsg );
         plaintext = calloc(sizeof(char*), arrSize);
         for ( i = 0; i < arrSize; ++i )
             plaintext[i] = calloc(sizeof(char), STR);
         Decryption( ciphertext, plaintext, d, n );
-        printf("ciphertext: %s\n\n\n", ciphertext);
-        /* printf("plaintext: %s\n\n", plaintext); */
 
         char tmpStr[STR] = "";
         for ( i = 0; i < arrSize; ++i ) {
