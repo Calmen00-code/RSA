@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
         getIntArray( ciphertext, cipherArr );
         decToHex( cipherArr, arrSize, hexacipher );
         writeToFile( hexacipher, "ciphertext.txt" );
-        printf("Encryption Result: ciphertext.txt");
+        printf("Encryption Result: ciphertext.txt\n");
 
         /***** DECRYPTION *****/
         plaintext = calloc(sizeof(char*), arrSize);
@@ -137,8 +137,8 @@ int main(int argc, char* argv[])
                     ++count;
             }
         }
-        printf("%s\n", convert);
-        printf("Decryption Result: plaintext.txt");
+        printf("Decryption Result: plain.txt\n");
+        writeToFile( "plain.txt", convert );
 
         /* Free the dynamic allocation created from read */
         free(content); content = NULL;

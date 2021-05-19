@@ -65,14 +65,17 @@ int readFileSize( char filename[] )
  */
 void writeToFile( char text[], char filename[] )
 {
+    int i;
     FILE *writePtr = NULL;
 
-    writePtr = fopen(filename, "r");
+    writePtr = fopen(filename, "w");
     if ( writePtr == NULL ) {
         perror("Error while writing to file");
-        exit(1);
     } else {
-        fprintf( writePtr, "%s", text);
+        for ( i = 0; text[i] != '\0'; ++i ) {
+            printf("%c", text[i]);
+            fprintf( writePtr, "%c", text[i] );
+        }
         fclose(writePtr); writePtr = NULL;
     }
 }
